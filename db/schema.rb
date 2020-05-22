@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_22_133517) do
+ActiveRecord::Schema.define(version: 2020_05_22_134519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "calculations", force: :cascade do |t|
+    t.bigint "system_id"
+    t.integer "panels_no", default: 0
+    t.integer "panel_rating_power", default: 0
+    t.string "panel_type"
+    t.integer "battery_rating_Ah", default: 0
+    t.integer "patterns_no", default: 0
+    t.integer "inverter_rating_power", default: 0
+    t.integer "inverters_no", default: 0
+    t.string "inverter_type"
+    t.integer "cc_rating_power", default: 0
+    t.integer "cc_no", default: 0
+    t.string "cc_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["system_id"], name: "index_calculations_on_system_id"
+  end
 
   create_table "systems", force: :cascade do |t|
     t.string "type"
