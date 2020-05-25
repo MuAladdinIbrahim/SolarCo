@@ -17,17 +17,14 @@ ActiveRecord::Schema.define(version: 2020_05_22_215804) do
 
   create_table "calculations", force: :cascade do |t|
     t.bigint "system_id"
-    t.integer "panels_no", default: 0
-    t.integer "panel_rating_power", default: 0
-    t.string "panel_type"
-    t.integer "battery_rating_Ah", default: 0
-    t.integer "patterns_no", default: 0
-    t.integer "inverter_rating_power", default: 0
-    t.integer "inverters_no", default: 0
-    t.string "inverter_type"
-    t.integer "cc_rating_power", default: 0
-    t.integer "cc_no", default: 0
-    t.string "cc_type"
+    t.integer "panels_num", default: 0
+    t.integer "panel_rate", default: 0
+    t.integer "battery_Ah", default: 0
+    t.integer "batteries_no", default: 0
+    t.integer "inverter_rate", default: 0
+    t.integer "inverters_num", default: 0
+    t.integer "mppt_rate", default: 0
+    t.integer "mppt_num", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["system_id"], name: "index_calculations_on_system_id"
@@ -43,11 +40,11 @@ ActiveRecord::Schema.define(version: 2020_05_22_215804) do
   end
 
   create_table "systems", force: :cascade do |t|
-    t.string "type"
     t.integer "latitude", default: 0
     t.integer "longitude", default: 0
     t.integer "electricity_bill", default: 0
     t.string "city"
+    t.string "country"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
