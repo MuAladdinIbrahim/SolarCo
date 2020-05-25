@@ -81,6 +81,7 @@ GEM
     ffi (1.12.2-java)
     ffi (1.12.2-x64-mingw32)
     ffi (1.12.2-x86-mingw32)
+    geocoder (1.6.3)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     hashie (4.1.0)
@@ -163,6 +164,8 @@ GEM
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    solar (0.1.2)
+      activesupport
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -201,12 +204,14 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   devise_token_auth
+  geocoder
   listen (~> 3.2)
   omniauth
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)
   rack-cors
   rails (~> 6.0.3, >= 6.0.3.1)
+  solar
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
