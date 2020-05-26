@@ -1,2 +1,86 @@
 class Calculation < ApplicationRecord
+    attr_accessor :panel_watt, :panels_num, :battery_dod, :battery_voltage, :battery_Ah, :system_circuits, :load_voltage
+    #### Panel #####
+  def panel_Calculate(consumption, lat)
+    @panel_watt = 250 ## to set voltage of PV_panel
+    wh_per_day = 1.1*(consumption/30)*1000
+    if lat.abs() < 70
+      gen_factor = ((90/lat.abs()) * 2.1).ceil(2) if lat.abs() > 30 || 6.5 #Generation Factor ~ sun rise hours 
+    end
+    tot_power = (wh_per_day*1.3 / gen_factor).ceil(-2)
+    @panels_num = ( tot_power / 250).ceil()
+    @panels_num += 1 if @panels_num.odd?
+
+    {"panel_watt" => @panel_watt, "wh_per_day" => wh_per_day, "gen_factor" => gen_factor, "tot_power" => tot_power, "panels_num" => @panels_num}
+  end
+
+  ##### Battery #####
+  def battery_Calculate(wh_per_day, lat)
+    @battery_dod = 0.5      #Depth of Discharge
+    @battery_voltage = 12   #Battery Voltage
+    @battery_Ah = 200
+    if lat.abs() < 70
+      cloudy_days = ((lat.abs()/90)*5.5).ceil(2) if lat.abs() > 30 || 1 #Cloudy days without charging ~ climate
+    end 
+    battery_losses_factor = (0.95 - lat.abs()*0.0035).ceil(2) #Battery Losses ~ Temperature 
+    system_capacity = ((wh_per_day*cloudy_days)/(battery_losses_factor*@battery_dod*@battery_voltage*2)).ceil()
+    batteries_num = (system_capacity/@battery_Ah).ceil()
+    batteries_num += 1 if batteries_num.odd?
+
+    {"system_capacity" => system_capacity, "system_voltage" => @battery_voltage*2, "battery_losses_factor" => battery_losses_factor, "battery_Ah" => @battery_Ah, "batteries_num" => batteries_num, "cloudy_days" => cloudy_days}
+  end
+
+  # ##### AC-Inverter #####
+  # ##### MPPT Charger Controller #####
+  def inverter_mppt_Calculate
+    inverter_watt = ((@panels_num*@panel_watt)/0.7).ceil(3)
+    @system_circuits = 1
+    if inverter_watt > 2000
+      @system_circuits = (((inverter_watt/2000)+0.4).ceil(1)).round()
+      @system_circuits += 1 if @system_circuits.odd?
+      inverter_watt = (inverter_watt/@system_circuits).ceil(3)
+    end
+    mppt_amp = ((@panels_num*@panel_watt*1.2)/(@battery_voltage*2)).ceil()
+    mppt_amp = mppt_amp / @system_circuits if @system_circuits > 1
+
+    {"inverter_watt" => inverter_watt.ceil(-2), "inverters_num" => @system_circuits, "mppt_amp" => mppt_amp.ceil(-1), "mppts_num" => @system_circuits}
+  end
+
+
+    # ##### Tilt Angle and Azimth #####
+    def position_Calculate(lat, long)
+      if lat >= 0 
+        {"tilt angle" => lat.abs().ceil(2), "description" => "from North to be due south"} 
+      else
+        {"tilt angle" => lat.abs().ceil(2), "description" => "from South to be due North"}
+      end
+    end
+
+    # ##### Cables and Protections #####
+    def cables_protections_Calculate(calc_obj)
+      section1 = section1(calc_obj.mppt_amp)
+      section2 = section2(calc_obj.batteries_num/@system_circuits)
+      section3 = section3(calc_obj.inverter_watt)
+      {"section1" => section1, "section2" => section2, "section3" => section3}
+    end
+
+    def section1(mppt_amp)     #Cable and Fuse
+      fuse_rate = (mppt_amp).ceil()
+      cable_rate = (1.2*fuse_rate).ceil()
+      {"mppt_max_rate" => (mppt_amp+10), "cable_current1" => "#{cable_rate}, solid", "fuse_current1" => fuse_rate}
+    end
+
+    def section2(batteries_num_per_circuit)   #cable and Fuse
+        fuse_rate = ((batteries_num_per_circuit/2)*@battery_Ah).ceil()
+        cable_rate = (1.2*fuse_rate).ceil()
+        {"battery_max_rate" => (@battery_Ah+10), "cable_current2" => "#{cable_rate}, solid", "fuse_current2" => fuse_rate}
+    end
+
+    def section3(inverter_watt)     #cable and CircuitBreaker 
+        @load_voltage = 220
+        cb_rate = ((inverter_watt*1.9)/@load_voltage).ceil()
+        cable_rate = (1.3*cb_rate).ceil()
+        {"inverter_max_rate" => (inverter_watt+100), "system_voltage" => @load_voltage, "cable_current3" => "#{cable_rate}, stranded", "circuitBreaker_current3" => cb_rate}
+    end
+
 end

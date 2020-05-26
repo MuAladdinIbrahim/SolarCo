@@ -13,6 +13,8 @@ class CalculationsController < ApplicationController
 
   # POST /calculations
   def create
+    @calculation = Calculation.new()
+
     @loc = request.location.data['loc']
     @loc.split(',') unless @loc.nil?
 
@@ -23,17 +25,19 @@ class CalculationsController < ApplicationController
     lat = @loc[0].to_f
     long = @loc[1].to_f
     
-    panel = panelCalculation(consumption, lat)
-    battery = batteryCalculation(panel['wh_per_day'], lat)
-    inverter = inverterCalculation(panel['num_of_panels'])
-    mppt = mpptCalculation(panel['num_of_panels'], inverter['num_of_inverters'])
-
+    panel = @calculation.panel_Calculate(consumption, lat)
+    battery = @calculation.battery_Calculate(panel['wh_per_day'], lat)
+    componets = @calculation.inverter_mppt_Calculate()
+    position = @calculation.position_Calculate(lat, long)
+    
     @system = System.create(latitude: lat, longitude: long, electricity_bill: consumption, city: res['data']['region'],country: res['data']['country'], user_id: 1)
+    
+    @calculation.update(system_id: @system.id, system_circuits: componets['inverters_num'], panels_num: panel['panels_num'], panel_watt: panel['panel_watt'], battery_Ah: battery['battery_Ah'], batteries_num: battery['batteries_num'], inverter_watt: componets['inverter_watt'], mppt_amp: componets['mppt_amp'])
+    
+    cables_protections = @calculation.cables_protections_Calculate(@calculation)
 
-    @calculation = Calculation.create(system_id: @system.id, panels_num: panel['num_of_panels'], panel_rate: panel['panel_rating_power'], battery_Ah: battery['battery_capacity'], batteries_no: battery['num_of_batteries'], inverter_rate: inverter['inverter_rate'], inverters_num: inverter['num_of_inverters'], mppt_rate: mppt['mppt_rate'], mppt_num: mppt['num_of_mppt'])
-
-    @cal = {"res" => {"panel" => panel, "battery" => battery, "inverter" => inverter, "mppt" => mppt}, "sys" => @system, "calc" => @calculation}
-
+    @cal = {"res" => {"panel" => panel, "battery" => battery, "componets" => componets, "cables_protections" => cables_protections, "Installations" => position}, "sys" => @system, "calc" => @calculation}
+    
     render json: @cal 
   end
 
@@ -96,6 +100,7 @@ class CalculationsController < ApplicationController
     num_of_inverters = 1
     if inverter_rate > 2000
       num_of_inverters = ( ((inverter_rate/2000)+0.1).ceil(1) ).round()
+      num_of_inverters += 1 if num_of_inverters.odd?
       inverter_rate = (inverter_rate/num_of_inverters).ceil(3)
     end
     {"inverter_rate" => inverter_rate, "num_of_inverters" => num_of_inverters}
