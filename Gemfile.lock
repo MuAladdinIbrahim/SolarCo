@@ -164,8 +164,6 @@ GEM
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
-    solar (0.1.2)
-      activesupport
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -211,7 +209,6 @@ DEPENDENCIES
   puma (~> 4.1)
   rack-cors
   rails (~> 6.0.3, >= 6.0.3.1)
-  solar
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
