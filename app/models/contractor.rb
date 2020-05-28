@@ -1,0 +1,3 @@
+class Contractor < User
+ 
+end
