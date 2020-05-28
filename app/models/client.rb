@@ -9,7 +9,7 @@ class Client < User
     def as_json(options={})
         super(options).merge({
             type: self.type,
-            avatar_url: self.avatar_url
+            avatar: "#{Rails.configuration.api_url}#{self.avatar_url}"
         })
     end
 end
