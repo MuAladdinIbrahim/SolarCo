@@ -4,7 +4,7 @@ class ClientsController < ApplicationController
     # PATCH/PUT /clients/avatar/1
     def updateAvatar
         if @client.update(avatar: params[:avatar])
-            render :json => @client.as_json(methods: :avatar_url)
+            render :json => @client
         else
             render json: @client.errors, status: :unprocessable_entity
         end
