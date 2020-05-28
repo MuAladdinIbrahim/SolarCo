@@ -17,14 +17,13 @@ ActiveRecord::Schema.define(version: 2020_05_22_215804) do
 
   create_table "calculations", force: :cascade do |t|
     t.bigint "system_id"
+    t.integer "system_circuits", default: 0
     t.integer "panels_num", default: 0
-    t.integer "panel_rate", default: 0
+    t.integer "panel_watt", default: 0
     t.integer "battery_Ah", default: 0
-    t.integer "batteries_no", default: 0
-    t.integer "inverter_rate", default: 0
-    t.integer "inverters_num", default: 0
-    t.integer "mppt_rate", default: 0
-    t.integer "mppt_num", default: 0
+    t.integer "batteries_num", default: 0
+    t.integer "inverter_watt", default: 0
+    t.integer "mppt_amp", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["system_id"], name: "index_calculations_on_system_id"
@@ -40,8 +39,8 @@ ActiveRecord::Schema.define(version: 2020_05_22_215804) do
   end
 
   create_table "systems", force: :cascade do |t|
-    t.integer "latitude", default: 0
-    t.integer "longitude", default: 0
+    t.decimal "latitude", precision: 10, scale: 3, default: "0.0"
+    t.decimal "longitude", precision: 10, scale: 3, default: "0.0"
     t.integer "electricity_bill", default: 0
     t.string "city"
     t.string "country"
