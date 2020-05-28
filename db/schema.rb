@@ -10,24 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_22_215804) do
+ActiveRecord::Schema.define(version: 2020_05_27_123941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
   create_table "calculations", force: :cascade do |t|
     t.bigint "system_id"
-    t.integer "panels_no", default: 0
-    t.integer "panel_rating_power", default: 0
-    t.string "panel_type"
-    t.integer "battery_rating_Ah", default: 0
-    t.integer "patterns_no", default: 0
-    t.integer "inverter_rating_power", default: 0
-    t.integer "inverters_no", default: 0
-    t.string "inverter_type"
-    t.integer "cc_rating_power", default: 0
-    t.integer "cc_no", default: 0
-    t.string "cc_type"
+    t.integer "system_circuits", default: 0
+    t.integer "panels_num", default: 0
+    t.integer "panel_watt", default: 0
+    t.integer "battery_Ah", default: 0
+    t.integer "batteries_num", default: 0
+    t.integer "inverter_watt", default: 0
+    t.integer "mppt_amp", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["system_id"], name: "index_calculations_on_system_id"
@@ -43,11 +60,11 @@ ActiveRecord::Schema.define(version: 2020_05_22_215804) do
   end
 
   create_table "systems", force: :cascade do |t|
-    t.string "type"
-    t.integer "latitude", default: 0
-    t.integer "longitude", default: 0
+    t.decimal "latitude", precision: 10, scale: 3, default: "0.0"
+    t.decimal "longitude", precision: 10, scale: 3, default: "0.0"
     t.integer "electricity_bill", default: 0
     t.string "city"
+    t.string "country"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -78,10 +95,12 @@ ActiveRecord::Schema.define(version: 2020_05_22_215804) do
     t.json "tokens"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "type", default: "Client", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
 end
