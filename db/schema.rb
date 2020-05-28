@@ -60,9 +60,12 @@ ActiveRecord::Schema.define(version: 2020_05_27_123941) do
   end
 
   create_table "systems", force: :cascade do |t|
-    t.decimal "latitude", precision: 10, scale: 3, default: "0.0"
-    t.decimal "longitude", precision: 10, scale: 3, default: "0.0"
-    t.integer "electricity_bill", default: 0
+    t.decimal "latitude", precision: 15, scale: 8, default: "0.0"
+    t.decimal "longitude", precision: 15, scale: 8, default: "0.0"
+    t.integer "consumption", default: 0
+    t.string "road"
+    t.string "neighbourhood"
+    t.string "hamlet"
     t.string "city"
     t.string "country"
     t.bigint "user_id"
