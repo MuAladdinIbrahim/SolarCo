@@ -9,13 +9,11 @@ class CalculationsController < ApplicationController
 
   # GET /calculations/1
   def show
-        
-    position = @calculation.position_Calculate(lat, @system.longitude)
+    position = @calculation.position_Calculate(@calculation.system.latitude, @calculation.system.longitude)
     cables_protections = @calculation.cables_protections_Calculate(@calculation)
 
     @calc = {"system" => @calculation.system, "calculation" => @calculation, "calculations_details" => {"cables_protections" => cables_protections, "Installations" => position}}
 
-    # render json: @calculation
     render json: @calc
   end
 
@@ -27,8 +25,10 @@ class CalculationsController < ApplicationController
     panel = @calculation.panel_Calculate(@system.consumption, @system.latitude)
     battery = @calculation.battery_Calculate(panel['wh_per_day'], @system.latitude)
     componets = @calculation.inverter_mppt_Calculate()
-    
-    if @calculation.update(system_id: @system.id, system_circuits: componets['inverters_num'], panels_num: panel['panels_num'], panel_watt: panel['panel_watt'], battery_Ah: battery['battery_Ah'], batteries_num: battery['batteries_num'], inverter_watt: componets['inverter_watt'], mppt_amp: componets['mppt_amp'])
+
+    @calculation = Calculation.create(system_id: @system.id, system_circuits: componets['inverters_num'], panels_num: panel['panels_no'], panel_watt: panel['panel_watt'], battery_Ah: battery['battery_amp'], batteries_num: battery['batteries_num'], inverter_watt: componets['inverter_watt'], mppt_amp: componets['mppt_amp'])
+
+    unless @calculation.nil?
       render json: @calculation
     else
       render json: @calculation.errors, status: :unprocessable_entity
@@ -58,7 +58,7 @@ class CalculationsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def calculation_params
-      params.require(:calculation).permit(:id, :ip, :lat, :long, :consump)
+      params.fetch(:calculation, {}).permit(:id)
     end
 
 end

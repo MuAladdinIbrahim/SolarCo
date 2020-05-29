@@ -38,10 +38,10 @@ ActiveRecord::Schema.define(version: 2020_05_29_052317) do
 
   create_table "calculations", force: :cascade do |t|
     t.integer "system_circuits", default: 1
-    t.integer "panels_num", default: 0
+    t.integer "panels_num", default: 1
     t.integer "panel_watt", default: 250
     t.integer "battery_Ah", default: 200
-    t.integer "batteries_num", default: 0
+    t.integer "batteries_num", default: 1
     t.integer "inverter_watt", default: 0
     t.integer "mppt_amp", default: 0
     t.bigint "system_id", null: false
