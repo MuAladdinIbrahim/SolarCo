@@ -37,14 +37,14 @@ ActiveRecord::Schema.define(version: 2020_05_29_052317) do
   end
 
   create_table "calculations", force: :cascade do |t|
-    t.bigint "system_id"
-    t.integer "system_circuits", default: 0
+    t.integer "system_circuits", default: 1
     t.integer "panels_num", default: 0
-    t.integer "panel_watt", default: 0
-    t.integer "battery_Ah", default: 0
+    t.integer "panel_watt", default: 250
+    t.integer "battery_Ah", default: 200
     t.integer "batteries_num", default: 0
     t.integer "inverter_watt", default: 0
     t.integer "mppt_amp", default: 0
+    t.bigint "system_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["system_id"], name: "index_calculations_on_system_id"
@@ -70,13 +70,13 @@ ActiveRecord::Schema.define(version: 2020_05_29_052317) do
   end
 
   create_table "posts", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "calculation_id"
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "title", null: false
     t.text "description", null: false
-    t.index ["calculation_id"], name: "index_posts_on_calculation_id"
+    t.index ["post_id"], name: "index_posts_on_post_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -87,9 +87,10 @@ ActiveRecord::Schema.define(version: 2020_05_29_052317) do
     t.string "road"
     t.string "neighbourhood"
     t.string "hamlet"
-    t.string "city"
-    t.string "country"
-    t.bigint "user_id"
+    t.string "city", null: false
+    t.string "country", null: false
+    t.bigint "user_id", null: false
+    t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_systems_on_user_id"
@@ -127,6 +128,10 @@ ActiveRecord::Schema.define(version: 2020_05_29_052317) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "calculations", "systems"
   add_foreign_key "offers", "contractors"
   add_foreign_key "offers", "posts"
+  add_foreign_key "posts", "posts"
+  add_foreign_key "posts", "users"
+  add_foreign_key "systems", "users"
 end

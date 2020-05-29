@@ -7,9 +7,11 @@ class CreateSystems < ActiveRecord::Migration[6.0]
       t.string :road
       t.string :neighbourhood
       t.string :hamlet
-      t.string :city
-      t.string :country
-      t.references :user
+      t.string :city, null: false
+      t.string :country, null: false
+      t.references :user, null: false, foreign_key: true
+      t.integer :status, :default => 0
+
       t.timestamps
     end
   end
