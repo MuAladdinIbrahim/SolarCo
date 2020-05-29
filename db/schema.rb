@@ -38,10 +38,10 @@ ActiveRecord::Schema.define(version: 2020_05_29_122939) do
 
   create_table "calculations", force: :cascade do |t|
     t.integer "system_circuits", default: 1
-    t.integer "panels_num", default: 0
+    t.integer "panels_num", default: 1
     t.integer "panel_watt", default: 250
     t.integer "battery_Ah", default: 200
-    t.integer "batteries_num", default: 0
+    t.integer "batteries_num", default: 1
     t.integer "inverter_watt", default: 0
     t.integer "mppt_amp", default: 0
     t.bigint "system_id", null: false
@@ -81,8 +81,8 @@ ActiveRecord::Schema.define(version: 2020_05_29_122939) do
   end
 
   create_table "systems", force: :cascade do |t|
-    t.decimal "latitude", precision: 15, scale: 8, default: "0.0"
-    t.decimal "longitude", precision: 15, scale: 8, default: "0.0"
+    t.decimal "latitude", precision: 10, scale: 8, default: "0.0"
+    t.decimal "longitude", precision: 10, scale: 8, default: "0.0"
     t.integer "consumption", default: 0
     t.string "road"
     t.string "neighbourhood"
@@ -90,7 +90,6 @@ ActiveRecord::Schema.define(version: 2020_05_29_122939) do
     t.string "city", null: false
     t.string "country", null: false
     t.bigint "user_id", null: false
-    t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_systems_on_user_id"

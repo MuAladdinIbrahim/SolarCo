@@ -1,7 +1,8 @@
 class System < ApplicationRecord
-    enum status: [:unpublished, :published]
+    has_one :calculation
 
     def publish(sys_obj)
         sys_obj.update(status: 'published')
     end
+    
 end

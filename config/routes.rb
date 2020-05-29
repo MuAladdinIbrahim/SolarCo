@@ -2,24 +2,32 @@ Rails.application.routes.draw do
   resources :offers
   mount_devise_token_auth_for 'User', at: 'auth'
   resources :posts
-  resources :systems
   resources :users
-  ###### Calculations Routes #######
-  post 'pv-calculation', to: 'calculations#create'
-  # get 'clients/:id', to: 'clients#show'
-  #################################
 
-  ###### Clients Routes #######
+  ######## Calculations Routes #########
+  get 'pv-calculation/:id', to: 'calculations#show'
+  post 'pv-calculation', to: 'calculations#create'
+  delete 'pv-calculation/:id', to: 'calculations#destroy'
+  ###################################################
+
+  ######### Systems Routes #########
+  # get 'user-info'
+  get 'system-info', to: 'systems#show'
+  post 'system-info', to: 'systems#create'
+  delete 'system-info/:id', to: 'systems#destroy'
+  ###################################################
+
+  ######## Clients Routes #########
   put 'clients/avatar/:id', to: 'clients#updateAvatar'
   get 'clients/:id', to: 'clients#show'
-  #################################
+  ###################################################
 
-  ###### Contractor Routes #######
+
+  ######## Contractor Routes #########
   put 'contractors/:id', to: 'contractors#update'
-  #################################
+  ###################################################
 
-  ###### offers Route to get all offers on post #######
+  ######## offers Route to get all offers on post #########
   get 'offers/post/:id', to: 'offers#getOffers'
-  #################################
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  ###################################################
 end
