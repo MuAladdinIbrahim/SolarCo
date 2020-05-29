@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  proposal: MyString
+  price: 1
+  status: 1
+  contractor: one
+  post: one
+
+two:
+  proposal: MyString
+  price: 1
+  status: 1
+  contractor: two
+  post: two
