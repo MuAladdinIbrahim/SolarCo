@@ -9,13 +9,13 @@ class PostsController < ApplicationController
 
   # GET /posts/1
   def show
-    render json: @post
+    render json: @post.as_json(include: [:system])
   end
 
   # POST /posts
   def create
     @post = Post.new(post_params)
-    @post.user = User.find(1) #current_user.id
+    @post.user = User.find(current_user.id)
     @post.system = System.find(2) #find_by(uer_id: current_user.id).first
 
     if @post.save
@@ -47,6 +47,6 @@ class PostsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def post_params
-      params.require(:post).permit(:title,:description)
+      params.require(:post).permit(:title,:description,:system_id)
     end
 end
