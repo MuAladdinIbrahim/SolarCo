@@ -3,18 +3,19 @@ Rails.application.routes.draw do
   mount_devise_token_auth_for 'User', at: 'auth'
   resources :posts
   resources :users
-
+  
   ######## Calculations Routes #########
   get 'pv-calculation/:id', to: 'calculations#show'
   post 'pv-calculation', to: 'calculations#create'
   delete 'pv-calculation/:id', to: 'calculations#destroy'
   ###################################################
-
+  
   ######### Systems Routes #########
   # get 'user-info'
-  get 'system-info', to: 'systems#show'
-  post 'system-info', to: 'systems#create'
-  delete 'system-info/:id', to: 'systems#destroy'
+  post 'geocoder', to: 'geocoder#getLocation'
+  # get 'system-info', to: 'systems#show'
+  # post 'system-info', to: 'systems#create'
+  # delete 'system-info/:id', to: 'systems#destroy'
   ###################################################
 
   ######## Clients Routes #########

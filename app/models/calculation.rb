@@ -1,12 +1,12 @@
 class Calculation < ApplicationRecord
   belongs_to :system
 
-  attr_accessor :panel_watt, :panels_no, :battery_dod, :battery_voltage, :battery_amp, :sys_circuits, :load_voltage
+  attr_accessor :panel_wt, :panels_no, :battery_dod, :battery_voltage, :battery_amp, :sys_circuits, :load_voltage
   
   #### Panel #####
   def panel_Calculate(consumption, lat)
     puts "consump: #{consumption}"
-    @panel_watt = 250 ## to set voltage of PV_panel
+    @panel_wt = 250 ## to set voltage of PV_panel
     wh_per_day = 1.1*(consumption/30)*1000
     if lat.abs() < 70
       gen_factor = ((90/lat.abs()) * 2.1).ceil(2) if lat.abs() > 30 || 6.5 #Generation Factor ~ sun rise hours 
@@ -15,7 +15,7 @@ class Calculation < ApplicationRecord
     @panels_no = ( tot_power / 250).ceil()
     @panels_no += 1 if @panels_no.odd? || @panels_no == 0
 
-    {"panel_watt" => @panel_watt, "wh_per_day" => wh_per_day, "gen_factor" => gen_factor, "tot_power" => tot_power, "panels_no" => @panels_no}
+    {"panel_watt" => @panel_wt, "wh_per_day" => wh_per_day, "gen_factor" => gen_factor, "tot_power" => tot_power, "panels_no" => @panels_no}
   end
 
   ##### Battery #####
@@ -37,14 +37,14 @@ class Calculation < ApplicationRecord
   # ##### AC-Inverter #####
   # ##### MPPT Charger Controller #####
   def inverter_mppt_Calculate
-    inverter_watt = ((@panels_no*@panel_watt)/0.7).ceil(3)
+    inverter_watt = ((@panels_no*@panel_wt)/0.7).ceil(3)
     @sys_circuits = 1
     if inverter_watt > 2000
       @sys_circuits = (((inverter_watt/2000)+0.4).ceil(1)).round()
       @sys_circuits += 1 if @sys_circuits.odd?
       inverter_watt = (inverter_watt/@sys_circuits).ceil(3)
     end
-    mppt_amp = ((@panels_no*@panel_watt*1.2)/(@battery_voltage*2)).ceil()
+    mppt_amp = ((@panels_no*@panel_wt*1.2)/(@battery_voltage*2)).ceil()
     mppt_amp = mppt_amp / @sys_circuits if @sys_circuits > 1
     
     puts "Panel = #{@sys_circuits}"

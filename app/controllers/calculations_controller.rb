@@ -9,17 +9,19 @@ class CalculationsController < ApplicationController
 
   # GET /calculations/1
   def show
-    position = @calculation.position_Calculate(@calculation.system.latitude, @calculation.system.longitude)
-    cables_protections = @calculation.cables_protections_Calculate(@calculation)
+    if @calculation
+      position = @calculation.position_Calculate(@calculation.system.latitude, @calculation.system.longitude)
+      cables_protections = @calculation.cables_protections_Calculate(@calculation)
 
-    @calc = {"system" => @calculation.system, "calculation" => @calculation, "calculations_details" => {"cables_protections" => cables_protections, "Installations" => position}}
+      @calc = {"system" => @calculation.system, "calculation" => @calculation, "calculations_details" => {"cables_protections" => cables_protections, "Installations" => position}}
 
-    render json: @calc
+      render json: @calc
+    end
   end
 
   # POST /calculations
   def create    
-    @system = System.find(calculation_params[:id]) 
+    @system = createSystem
 
     @calculation = Calculation.new()
     panel = @calculation.panel_Calculate(@system.consumption, @system.latitude)
@@ -48,17 +50,32 @@ class CalculationsController < ApplicationController
   # DELETE /calculations/1
   def destroy
     @calculation.destroy
+    @calculation.system.destroy
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_calculation
-      @calculation = Calculation.find(params[:id])
+      @calculation = Calculation.find(params[:id]) if Calculation.exists?(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def calculation_params
       params.fetch(:calculation, {}).permit(:id)
+    end
+
+    def createSystem
+      if params[:lat] && params[:long]
+        res_loc = (Geocoder.search([params[:lat], params[:long]])[0].data).to_hash['address']
+  
+        @system = System.create(latitude: params[:lat].to_f, longitude: params[:long].to_f, consumption: params[:consump], city: res_loc['city'],country: res_loc['country'], user_id: 1)
+      else
+        res_ip = (Geocoder.search(params[:ip])[0].data).to_hash
+        loc = res_ip['loc'].split(',') unless res_ip['loc'].nil?
+  
+        @system = System.create(latitude: loc[0].to_f, longitude: loc[1].to_f, consumption: params[:consump], city: res_ip['region'],country: res_ip['country'], user_id: 1)
+      end
+
     end
 
 end

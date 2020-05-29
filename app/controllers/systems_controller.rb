@@ -16,9 +16,9 @@ class SystemsController < ApplicationController
   # POST /systems
   def create
     if params[:lat] && params[:long]
-      res_loc = (Geocoder.search([params[:lat], params[:long]])[0].data).to_hash
+      res_loc = (Geocoder.search([params[:lat], params[:long]])[0].data).to_hash['address']
 
-      @system = System.create(latitude: params[:lat].to_f, longitude: params[:long].to_f, consumption: params[:consump], city: res_loc['address']['city'],country: res_loc['address']['country'],road: res_loc['address']['road'], neighbourhood: res_loc['address']['neighbourhood'], hamlet: res_loc['address']['hamlet'], user_id: 1)
+      @system = System.create(latitude: params[:lat].to_f, longitude: params[:long].to_f, consumption: params[:consump], city: res_loc['city'],country: res_loc['country'], user_id: 1)
     else
       res_ip = (Geocoder.search(params[:ip])[0].data).to_hash
       loc = res_ip['loc'].split(',') unless res_ip['loc'].nil?
