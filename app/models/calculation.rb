@@ -1,5 +1,6 @@
 class Calculation < ApplicationRecord
-  
+  belongs_to :system
+
   attr_accessor :panel_watt, :panels_num, :battery_dod, :battery_voltage, :battery_Ah, :system_circuits, :load_voltage
     #### Panel #####
   def panel_Calculate(consumption, lat)
