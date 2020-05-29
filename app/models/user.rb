@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+    has_many :systems
+
     extend Devise::Models
     devise :database_authenticatable, 
     :registerable,

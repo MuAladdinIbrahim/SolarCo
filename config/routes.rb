@@ -5,14 +5,14 @@ Rails.application.routes.draw do
   resources :users
   
   ######## Calculations Routes #########
+  post 'geocoder', to: 'geocoder#getLocation'
+  get 'pv-calculations', to: 'calculations#index'
   get 'pv-calculation/:id', to: 'calculations#show'
   post 'pv-calculation', to: 'calculations#create'
   delete 'pv-calculation/:id', to: 'calculations#destroy'
   ###################################################
   
   ######### Systems Routes #########
-  # get 'user-info'
-  post 'geocoder', to: 'geocoder#getLocation'
   # get 'system-info', to: 'systems#show'
   # post 'system-info', to: 'systems#create'
   # delete 'system-info/:id', to: 'systems#destroy'
