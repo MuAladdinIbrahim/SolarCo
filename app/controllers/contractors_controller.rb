@@ -1,7 +1,7 @@
 class ContractorsController < ApplicationController
     before_action :set_user, only: [:update]
 
-    # PATCH/PUT /contractors/type/1
+    # PATCH/PUT /contractors/1
     def update
         if @contractor.update(contractor_params)
             render json: @contractor
@@ -19,6 +19,6 @@ class ContractorsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def contractor_params
-        params.fetch(:contractor, :is_verified)
+        params.fetch(:contractor, {})
     end
 end
