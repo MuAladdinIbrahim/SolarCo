@@ -4,8 +4,7 @@ class PostsController < ApplicationController
   # GET /posts
   def index
     @posts = Post.all
-    titles = []
-    render json: @posts   
+    render json: @posts.as_json(include: [:system])
   end
 
   # GET /posts/1
@@ -16,6 +15,8 @@ class PostsController < ApplicationController
   # POST /posts
   def create
     @post = Post.new(post_params)
+    @post.user = User.find(1) #current_user.id
+    @post.system = System.find(2) #find_by(uer_id: current_user.id).first
 
     if @post.save
       render json: @post, status: :created, location: @post
