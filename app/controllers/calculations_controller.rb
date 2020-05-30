@@ -13,8 +13,10 @@ class CalculationsController < ApplicationController
     if @calculation
       position = @calculation.position_Calculate(@calculation.system.latitude, @calculation.system.longitude)
       cables_protections = @calculation.cables_protections_Calculate(@calculation)
+      published = @calculation.system.published? (@calculation.system.id)
 
-      @calc = {"system" => @calculation.system, "calculation" => @calculation, "calculations_details" => {"cables_protections" => cables_protections, "Installations" => position}}
+      puts published
+      @calc = {"system" => @calculation.system, "calculation" => @calculation, "calculations_details" => {"cables_protections" => cables_protections, "Installations" => position}, "published" => published}
 
       render json: @calc
     end
@@ -74,7 +76,7 @@ class CalculationsController < ApplicationController
         res_ip = (Geocoder.search(params[:ip])[0].data).to_hash
         loc = res_ip['loc'].split(',') unless res_ip['loc'].nil?
   
-        @system = System.create(latitude: loc[0].to_f, longitude: loc[1].to_f, consumption: params[:consump], city: res_ip['region'],country: res_ip['country'], user_id: 1)
+        @system = System.create(latitude: loc[0].to_f, longitude: loc[1].to_f, consumption: params[:consump], city: res_ip['region'],country: res_ip['country'], user_id: current_user.id)
       end
     end
 

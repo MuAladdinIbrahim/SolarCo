@@ -1,6 +1,5 @@
 class GeocoderController < ApplicationController
   def getLocation
-    puts params[:_json]
     if params[:lat] && params[:long]
       res_loc = (Geocoder.search([params[:lat], params[:long]])[0].data).to_hash['address']
       
