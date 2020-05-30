@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 2020_05_29_122939) do
     t.string "proposal"
     t.integer "price"
     t.integer "status"
-    t.bigint "contractor_id", null: false
+    t.bigint "contractor_id"
     t.bigint "post_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -84,9 +84,6 @@ ActiveRecord::Schema.define(version: 2020_05_29_122939) do
     t.decimal "latitude", precision: 10, scale: 8, default: "0.0"
     t.decimal "longitude", precision: 10, scale: 8, default: "0.0"
     t.integer "consumption", default: 0
-    t.string "road"
-    t.string "neighbourhood"
-    t.string "hamlet"
     t.string "city", null: false
     t.string "country", null: false
     t.bigint "user_id", null: false

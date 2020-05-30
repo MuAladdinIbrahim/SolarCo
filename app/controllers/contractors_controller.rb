@@ -10,6 +10,18 @@ class ContractorsController < ApplicationController
         end
     end
 
+
+  # POST /offers
+  def create
+    @contractor = Contractor.new(offer_params)
+    @offer.contractor =  Contractor.find(current_user.id)
+    if @offer.save
+      render json: @offer, status: :created, location: @offer
+    else
+      render json: @offer.errors, status: :unprocessable_entity
+    end
+  end
+
     private
 
     # Use callbacks to share common setup or constraints between actions.
@@ -19,6 +31,6 @@ class ContractorsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def contractor_params
-        params.fetch(:contractor, {})
+        params.require(:contractor).permit(:has_office,:address)
     end
 end

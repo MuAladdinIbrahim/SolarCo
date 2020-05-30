@@ -24,12 +24,13 @@ class OffersController < ApplicationController
   # POST /offers
   def create
     @offer = Offer.new(offer_params)
-
+    @offer.contractor =  Contractor.find(current_user.id)
+    @offer.post = Post.find(1)
     if @offer.save
       render json: @offer, status: :created, location: @offer
     else
       render json: @offer.errors, status: :unprocessable_entity
-    end
+    end 
   end
 
   # PATCH/PUT /offers/1
@@ -54,6 +55,6 @@ class OffersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def offer_params
-      params.fetch(:offer, {})
+      params.require(:offer).permit(:proposal,:price, :post_id)
     end
 end

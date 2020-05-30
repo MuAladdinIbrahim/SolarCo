@@ -69,12 +69,12 @@ class CalculationsController < ApplicationController
       if params[:lat] && params[:long]
         res_loc = (Geocoder.search([params[:lat], params[:long]])[0].data).to_hash['address']
   
-        @system = System.create(latitude: params[:lat].to_f, longitude: params[:long].to_f, consumption: params[:consump], city: res_loc['city'],country: res_loc['country'], user_id: 1)
+        @system = System.create(latitude: params[:lat].to_f, longitude: params[:long].to_f, consumption: params[:consump], city: res_loc['city'],country: res_loc['country'], user_id: current_user.id)
       else
         res_ip = (Geocoder.search(params[:ip])[0].data).to_hash
         loc = res_ip['loc'].split(',') unless res_ip['loc'].nil?
   
-        @system = System.create(latitude: loc[0].to_f, longitude: loc[1].to_f, consumption: params[:consump], city: res_ip['region'],country: res_ip['country'], user_id: 1)
+        @system = System.create(latitude: loc[0].to_f, longitude: loc[1].to_f, consumption: params[:consump], city: res_ip['region'],country: res_ip['country'], user_id: current_user.id)
       end
     end
 
