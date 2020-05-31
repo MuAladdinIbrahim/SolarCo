@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
   ######## Contractor Routes #########
   put 'contractors/:id', to: 'contractors#update'
+  put 'contractors/avatar/:id', to: 'contractors#updateAvatar'
   ###################################################
 
   ######## offers Route to get all offers on post #########
