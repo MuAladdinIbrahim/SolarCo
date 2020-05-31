@@ -11,23 +11,19 @@ Rails.application.routes.draw do
   
   ######## Calculations Routes #########
   post 'geocoder', to: 'geocoder#getLocation'
-  get 'pv-calculations', to: 'calculations#index'
+  get 'pv-calculation', to: 'calculations#index'
   get 'pv-calculation/:id', to: 'calculations#show'
   post 'pv-calculation', to: 'calculations#create'
   delete 'pv-calculation/:id', to: 'calculations#destroy'
   ###################################################
   
   ######### Systems Routes #########
-  # get 'system-info', to: 'systems#show'
-  # post 'system-info', to: 'systems#create'
-  # delete 'system-info/:id', to: 'systems#destroy'
   ###################################################
 
   ######## Clients Routes #########
   put 'clients/avatar/:id', to: 'clients#updateAvatar'
   get 'clients/:id', to: 'clients#show'
   ###################################################
-
 
   ######## Contractor Routes #########
   put 'contractors/:id', to: 'contractors#update'

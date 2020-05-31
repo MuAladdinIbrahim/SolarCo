@@ -14,6 +14,8 @@ class PostsController < ApplicationController
 
   # POST /posts
   def create
+    # @post = Post.create(title: post_params['title'], description: post_params['description'], system_id: post_params['system_id'], user_id: 1)
+
     @post = Post.new(post_params)
     @post.user = User.find(current_user.id)
     @post.system = System.find(2) #find_by(uer_id: current_user.id).first
