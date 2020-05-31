@@ -51,7 +51,6 @@ ActiveRecord::Schema.define(version: 2020_05_30_192355) do
   end
 
   create_table "contractors", force: :cascade do |t|
-    t.boolean "has_office", default: false
     t.string "address"
     t.boolean "is_verified"
     t.integer "rate", default: 0
@@ -72,7 +71,6 @@ ActiveRecord::Schema.define(version: 2020_05_30_192355) do
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "name"
-    t.string "nickname"
     t.string "image"
     t.string "email"
     t.json "tokens"
@@ -137,7 +135,6 @@ ActiveRecord::Schema.define(version: 2020_05_30_192355) do
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "name"
-    t.string "nickname"
     t.string "image"
     t.string "email"
     t.json "tokens"

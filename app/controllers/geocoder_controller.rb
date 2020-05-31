@@ -5,6 +5,7 @@ class GeocoderController < ApplicationController
       
       render json: {"city" => res_loc['city'],"country" => res_loc['country']}
     else
+      puts params[:ip]
       res_ip = (Geocoder.search(params[:ip])[0].data).to_hash
       loc = res_ip['loc'].split(',') unless res_ip['loc'].nil?
 

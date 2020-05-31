@@ -18,7 +18,7 @@ class PostsController < ApplicationController
 
     @post = Post.new(post_params)
     @post.user = User.find(current_user.id)
-    @post.system = System.find(2) #find_by(uer_id: current_user.id).first
+    @post.system = System.find(1) #find_by(uer_id: current_user.id).first
 
     if @post.save
       render json: @post, status: :created, location: @post
