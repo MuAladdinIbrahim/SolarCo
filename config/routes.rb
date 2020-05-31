@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   ######## Clients Routes #########
   put 'clients/avatar/:id', to: 'clients#updateAvatar'
   get 'clients/:id', to: 'clients#show'
+  put 'clients/:id', to: 'clients#update'
   ###################################################
 
   ######## Contractor Routes #########

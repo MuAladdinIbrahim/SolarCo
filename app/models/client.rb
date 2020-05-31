@@ -12,4 +12,5 @@ class Client < User
             avatar: self.avatar_url
         })
     end
+
 end

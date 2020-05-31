@@ -1,5 +1,5 @@
 class ClientsController < ApplicationController
-    before_action :set_user, only: [:updateAvatar, :show]
+    before_action :set_user, only: [:updateAvatar, :show, :update]
 
     # PATCH/PUT /clients/avatar/1
     def updateAvatar
@@ -14,6 +14,14 @@ class ClientsController < ApplicationController
     def show
         # Call the method avatar_url to send its return value with the response
         render :json => @client.as_json(methods: :avatar_url)
+    end
+
+    def update
+        if @client.update(uid: params['email'], email: params['email'], name: params['name'])
+            render json: @client
+        else
+            render json: @client.errors, status: :unprocessable_entity
+        end
     end
 
     private

@@ -55,9 +55,9 @@ class Calculation < ApplicationRecord
     # ##### Tilt Angle and Azimth #####
     def position_Calculate(lat, long)
       if lat >= 0 
-        {"tilt angle" => lat.abs().ceil(2), "description" => "from North to be due south"} 
+        {"tilt_angle" => lat.abs().ceil(2), "description" => "from North to be due south"} 
       else
-        {"tilt angle" => lat.abs().ceil(2), "description" => "from South to be due North"}
+        {"tilt_angle" => lat.abs().ceil(2), "description" => "from South to be due North"}
       end
     end
 
