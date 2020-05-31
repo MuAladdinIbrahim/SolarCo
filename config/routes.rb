@@ -11,10 +11,7 @@ Rails.application.routes.draw do
   
   ######## Calculations Routes #########
   post 'geocoder', to: 'geocoder#getLocation'
-  get 'pv-calculation', to: 'calculations#index'
-  get 'pv-calculation/:id', to: 'calculations#show'
-  post 'pv-calculation', to: 'calculations#create'
-  delete 'pv-calculation/:id', to: 'calculations#destroy'
+  resources :calculations, except: [:update]
   ###################################################
   
   ######### Systems Routes #########

@@ -8,13 +8,13 @@ class Ability
     #
     #   user ||= User.new # guest user (not logged in)
     if user.present?
-      if user.type == 'Client'
+      if user.instance_of? Client
 
         can :create, Calculation
-        can :all, System
+        can :read, System
         can :all, Post, user_id: user.id
 
-      elsif user.type == 'Contractor'
+      elsif user.instance_of? Contractor
 
         can :all, Offer, contractor_id: user.id
         can :read, Post
@@ -43,12 +43,6 @@ class Ability
 
   def as_json
     abilities = []
-    # rules.map do |rule|
-    #   object = { actions: rule.actions, subject: rule.subjects.map{ |s| s.is_a?(Symbol) ? s : s.name } }
-    #   object[:conditions] = rule.conditions unless rule.conditions.blank?
-    #   object[:inverted] = true unless rule.base_behavior
-    #   object
-    # end
     rules.each do |rule|
       abilities << { action: rule.actions.as_json, subjects: rule.subjects.map{ |s| s.is_a?(Symbol) ? s : s.name }, conditions: rule.conditions.as_json, inverted: !rule.base_behavior }
     end
