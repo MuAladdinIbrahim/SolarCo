@@ -8,6 +8,10 @@ class CalculationsController < ApplicationController
     render json: @calculations
   end
 
+  def test
+    puts "yess"
+    render json: "yes"
+  end 
   # GET /calculations/1
   def show
     if @calculation
@@ -15,7 +19,6 @@ class CalculationsController < ApplicationController
       cables_protections = @calculation.cables_protections_Calculate(@calculation)
       published = @calculation.system.published? (@calculation.system.id)
 
-      puts published
       @calc = {"system" => @calculation.system, "calculation" => @calculation, "calculations_details" => {"cables_protections" => cables_protections, "Installations" => position}, "published" => published}
 
       render json: @calc
@@ -38,7 +41,6 @@ class CalculationsController < ApplicationController
     else
       render json: @calculation.errors, status: :unprocessable_entity
     end
-
   end
 
   # PATCH/PUT /calculations/1
@@ -70,6 +72,8 @@ class CalculationsController < ApplicationController
     def createSystem
       if params[:lat] && params[:long]
         res_loc = (Geocoder.search([params[:lat], params[:long]])[0].data).to_hash['address']
+
+        puts current_user.inspect
   
         @system = System.create(latitude: params[:lat].to_f, longitude: params[:long].to_f, consumption: params[:consump], city: res_loc['city'],country: res_loc['country'], user_id: current_user.id)
       else
