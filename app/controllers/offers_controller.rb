@@ -25,7 +25,7 @@ class OffersController < ApplicationController
   def create
     @offer = Offer.new(offer_params)
     @offer.contractor =  Contractor.find(current_contractor.id)
-    @offer.post = Post.find(1)
+    @offer.post = Post.find(offer_params['post_id'])
     if @offer.save
       render json: @offer, status: :created, location: @offer
     else
