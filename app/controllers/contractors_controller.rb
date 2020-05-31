@@ -1,4 +1,15 @@
 class ContractorsController < ApplicationController
+  devise_token_auth_group :member, contains: [:user, :contractor]
+  before_action :authenticate_member!
+
+def members_only
+  render json: {
+    data: {
+      message: "Welcome #{current_member.name}",
+      user: current_member
+    }
+  }, status: 200
+end
     before_action :set_user, only: [:update]
 
     # PATCH/PUT /contractors/1

@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   resources :offers
-  mount_devise_token_auth_for 'User', at: 'auth'
+  mount_devise_token_auth_for 'User', at: 'user/auth'
+
+  mount_devise_token_auth_for 'Contractor', at: 'contractor/auth'
+  as :contractor do
+    # Define routes for Contractor within this block.
+  end
   resources :posts
   resources :users
   
