@@ -9,7 +9,6 @@ class Client < User
 
     def as_json(options={})
         super(options).merge({
-            type: self.type,
             avatar: self.avatar_url
         })
     end
