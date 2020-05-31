@@ -10,7 +10,7 @@ class ContractorsController < ApplicationController
   #     }
   #   }, status: 200
   # end
-  before_action :set_user, only: [:update]
+  before_action :set_user, only: [:update, :updateAvatar]
 
   # PATCH/PUT /contractors/1
   def update
@@ -19,6 +19,15 @@ class ContractorsController < ApplicationController
       else
           render json: @contractor.errors, status: :unprocessable_entity
       end
+  end
+
+  # PATCH/PUT /contractors/avatar/1
+  def updateAvatar
+    if @contractor.update(avatar: params[:avatar])
+        render :json => @contractor
+    else
+        render json: @contractor.errors, status: :unprocessable_entity
+    end
   end
 
 
