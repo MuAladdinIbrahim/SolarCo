@@ -14,12 +14,11 @@ class Ability
         can :read, System
         can [:update, :destroy, :read], Post, user_id: user.id
         can :create, Post
-        can :read, Offer
 
       elsif user.instance_of? Contractor
 
         can [:update, :destroy], Offer, contractor_id: user.id
-        can [:create, :read], Offer
+        can :create, Offer
         can :read, Post
 
       end
