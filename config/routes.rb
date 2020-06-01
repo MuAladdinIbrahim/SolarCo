@@ -29,6 +29,6 @@ Rails.application.routes.draw do
   ###################################################
 
   ######## offers Route to get all offers on post #########
-  get 'offers/post/:id', to: 'offers#getOffers'
+  get 'offers/post/:post_id', to: 'offers#getOffers'
   ###################################################
 end
