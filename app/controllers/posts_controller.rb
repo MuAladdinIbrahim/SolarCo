@@ -9,7 +9,12 @@ class PostsController < ApplicationController
         @posts = Post.where(user_id: current_user.id)
         puts "inside user"
         if(@posts != nil)
-        render json: @posts.as_json(include: [:system,:user])
+          # render json: @posts.as_json(include: [:system,:user])
+          render json: @posts.as_json(include: [{system: {
+            include: { calculation: {
+              except: :calculation_id
+            } }
+          }} , :user])
         else 
           render json: {
             data:{
@@ -23,7 +28,12 @@ class PostsController < ApplicationController
         puts "inside contractor"
         if(@posts != nil)
           puts "inside if in contractor"
-          render json: @posts.as_json(include: [:system,:user])
+          # render json: @posts.as_json(include: [:system,:user])
+          render json: @posts.as_json(include: [{system: {
+            include: { calculation: {
+              except: :calculation_id
+            } }
+          }} , :user])
           else 
             render json: {
               data:{
@@ -37,7 +47,12 @@ class PostsController < ApplicationController
 
   # GET /posts/1
   def show
-    render json: @post.as_json(include: [:system,:user])
+    # render json: @post.as_json(include: [:system,:user])
+    render json: @post.as_json(include: [{system: {
+      include: { calculation: {
+        except: :calculation_id
+      } }
+    }} , :user])
   end
 
   # POST /posts
