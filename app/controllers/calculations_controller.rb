@@ -3,7 +3,8 @@ class CalculationsController < ApplicationController
 
   # GET /calculations
   def index
-    @calculations = getCalculations(current_user.systems)
+    # @calculations = getCalculations(current_user.systems)
+    @calculations = Calculation.where(user_id: current_user.id)
 
     render json: @calculations
   end
@@ -72,12 +73,12 @@ class CalculationsController < ApplicationController
         @system = System.create(latitude: loc[0].to_f, longitude: loc[1].to_f, consumption: params[:consump], city: res_ip['region'],country: res_ip['country'], user_id: current_user.id)
     end
 
-    def getCalculations(systems)
-      cals = [];
-      systems.each do |system|
-        cals << system.calculation
-      end
-      cals
-    end
+    # def getCalculations(systems)
+    #   cals = [];
+    #   systems.each do |system|
+    #     cals << {"systems" => system, "system_id" => system.id}
+    #   end
+    #   cals
+    # end
 
 end

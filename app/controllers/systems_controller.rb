@@ -3,7 +3,7 @@ class SystemsController < ApplicationController
 
   # GET /systems
   def index
-    @systems = System.all
+    @systems = getCalculations(System.where(user_id: current_user.id))
 
     render json: @systems
   end
@@ -57,4 +57,13 @@ class SystemsController < ApplicationController
     def system_params
       params.require(:system).permit()
     end
+
+    def getCalculations(systems)
+      sys = [];
+      systems.each do |system|
+        sys << {"system" => system, "calculation_id" => system.calculation.id}
+      end
+      sys
+    end
+
 end
