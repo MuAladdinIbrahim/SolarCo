@@ -4,21 +4,21 @@ class OffersController < ApplicationController
 
   # GET /offers/post/1  -> end-point to retrieve all offer from specific post
   def getOffers
-    @offers = Offer.find(params[:post_id]).all
+    @offers = Offer.where(post_id: params[:post_id]).all
 
-    render json: @offers
+    render json: @offers.as_json(include: [:contractor])
   end
 
   # GET /offers
   def index
-    @offers = Offer.all
+    @offers = Offer.where(contractor_id: current_contractor.id).all
 
-    render json: @offers
+    render json: @offers.as_json(include: [:post])
   end
 
   # GET /offers/1
   def show
-    render json: @offer
+    render json: @offer.as_json(include: [:post])
   end
 
   # POST /offers
