@@ -11,14 +11,14 @@ class OffersController < ApplicationController
 
   # GET /offers
   def index
-    @offers = Offer.all
+    @offers = Offer.where(contractor_id: current_contractor.id).all
 
-    render json: @offers
+    render json: @offers.as_json(include: [:post])
   end
 
   # GET /offers/1
   def show
-    render json: @offer
+    render json: @offer.as_json(include: [:post])
   end
 
   # POST /offers
