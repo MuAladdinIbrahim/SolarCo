@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :offer_rates
   resources :offer_reviews
+  resources :offers
   resources :reviews
   resources :posts
   resources :users
@@ -13,10 +14,11 @@ Rails.application.routes.draw do
 
   ######## Calculations Routes #########
   post 'geocoder', to: 'geocoder#getLocation'
-  resources :calculations, except: [:update]
+  resources :calculations, except: [:update, :index]
   ###################################################
   
   ######### Systems Routes #########
+  resources :systems, only: [:index]
   ###################################################
 
   ######## Clients Routes #########
