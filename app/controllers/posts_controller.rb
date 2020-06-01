@@ -3,22 +3,49 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all
-    render json: @posts.as_json(include: [:system])
+
+      puts "out of if" 
+      if(current_user)
+        @posts = Post.where(user_id: current_user.id)
+        puts "inside user"
+        if(@posts != nil)
+        render json: @posts.as_json(include: [:system,:user])
+        else 
+          render json: {
+            data:{
+              message:"no posts"
+            }
+          }
+        end
+      end
+      if(current_contractor)
+        @posts = Post.all
+        puts "inside contractor"
+        if(@posts != nil)
+          puts "inside if in contractor"
+          render json: @posts.as_json(include: [:system,:user])
+          else 
+            render json: {
+              data:{
+                message:"no posts"
+              }
+            }
+          end
+      end
+
   end
 
   # GET /posts/1
   def show
-    render json: @post.as_json(include: [:system])
+    render json: @post.as_json(include: [:system,:user])
   end
 
   # POST /posts
   def create
-    # @post = Post.create(title: post_params['title'], description: post_params['description'], system_id: post_params['system_id'], user_id: 1)
 
     @post = Post.new(post_params)
     @post.user = User.find(current_user.id)
-    @post.system = System.find(post_params['system_id']) #find_by(uer_id: current_user.id).first
+    @post.system = System.find(post_params['system_id'])
 
     if @post.save
       render json: @post, status: :created, location: @post
