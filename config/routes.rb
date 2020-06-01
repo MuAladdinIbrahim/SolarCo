@@ -1,14 +1,16 @@
 Rails.application.routes.draw do
-  resources :offers
+  resources :offer_rates
+  resources :offer_reviews
+  resources :reviews
+  resources :posts
+  resources :users
+  
   mount_devise_token_auth_for 'User', at: 'user/auth'
-
   mount_devise_token_auth_for 'Contractor', at: 'contractor/auth'
   as :contractor do
     # Define routes for Contractor within this block.
   end
-  resources :posts
-  resources :users
-  
+
   ######## Calculations Routes #########
   post 'geocoder', to: 'geocoder#getLocation'
   resources :calculations, except: [:update]
