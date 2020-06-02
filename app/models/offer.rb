@@ -7,4 +7,5 @@ class Offer < ApplicationRecord
   enum status: [:accepted, :rejected]
 
   validates :proposal, :price, presence: true
+  
 end

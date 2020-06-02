@@ -14,7 +14,7 @@ class Ability
         can :read, System
         can [:update, :destroy, :read], Post, user_id: user.id
         can :create, Post
-
+        can :update, Offer
       elsif user.instance_of? Contractor
 
         can [:update, :destroy], Offer, contractor_id: user.id

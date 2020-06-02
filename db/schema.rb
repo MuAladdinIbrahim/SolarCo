@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(version: 2020_06_01_061016) do
   create_table "offers", force: :cascade do |t|
     t.string "proposal"
     t.integer "price"
-    t.integer "status"
+    t.integer "status", default: 1
     t.bigint "contractor_id"
     t.bigint "post_id", null: false
     t.datetime "created_at", precision: 6, null: false
