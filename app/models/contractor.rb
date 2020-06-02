@@ -7,7 +7,9 @@ class Contractor < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
-
+  has_one :offer
+  has_many :offer_rates, through: :offer
+  has_many :offer_reviews, through: :offer
   has_one_attached :avatar
 
   # Returns the url path for the avatar blob

@@ -51,7 +51,6 @@ ActiveRecord::Schema.define(version: 2020_06_01_061016) do
   end
 
   create_table "contractors", force: :cascade do |t|
-    t.boolean "has_office", default: false
     t.string "address"
     t.boolean "is_verified"
     t.integer "rate", default: 0

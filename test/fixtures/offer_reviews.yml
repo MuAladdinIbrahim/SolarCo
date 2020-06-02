@@ -2,10 +2,10 @@
 
 one:
   review: MyText
-  contractor: one
+  user: one
   offer: one
 
 two:
   review: MyText
-  contractor: two
+  user: two
   offer: two

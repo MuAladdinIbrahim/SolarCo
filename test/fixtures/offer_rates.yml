@@ -2,10 +2,10 @@
 
 one:
   rate: 9.99
-  contractor: one
+  user: one
   offer: one
 
 two:
   rate: 9.99
-  contractor: two
+  user: two
   offer: two
