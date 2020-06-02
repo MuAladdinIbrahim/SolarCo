@@ -12,11 +12,13 @@ class Ability
 
         can :create, Calculation
         can :read, System
-        can :all, Post, user_id: user.id
+        can [:update, :destroy, :read], Post, user_id: user.id
+        can :create, Post
 
       elsif user.instance_of? Contractor
 
-        can :all, Offer, contractor_id: user.id
+        can [:update, :destroy], Offer, contractor_id: user.id
+        can :create, Offer
         can :read, Post
 
       end
@@ -44,7 +46,7 @@ class Ability
   def as_json
     abilities = []
     rules.each do |rule|
-      abilities << { action: rule.actions.as_json, subjects: rule.subjects.map{ |s| s.is_a?(Symbol) ? s : s.name }, conditions: rule.conditions.as_json, inverted: !rule.base_behavior }
+      abilities << { action: rule.actions.as_json, subject: rule.subjects.map{ |s| s.is_a?(Symbol) ? s : s.name }, conditions: rule.conditions.as_json, inverted: !rule.base_behavior }
     end
     abilities
   end

@@ -51,3 +51,6 @@ gem 'geocoder'
 
 #faker 
 gem 'faker'
+
+#admin
+gem 'rails_admin', '~> 2.0.2'
