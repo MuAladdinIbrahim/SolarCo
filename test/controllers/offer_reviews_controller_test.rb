@@ -12,7 +12,7 @@ class OfferReviewsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create offer_review" do
     assert_difference('OfferReview.count') do
-      post offer_reviews_url, params: { offer_review: { offer_id: @offer_review.offer_id, review: @offer_review.review, user_id: @offer_review.user_id } }, as: :json
+      post offer_reviews_url, params: { offer_review: { offer_id: @offer_review.offer_id, review: @offer_review.review, contractor_id: @offer_review.contractor_id } }, as: :json
     end
 
     assert_response 201
@@ -24,7 +24,7 @@ class OfferReviewsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update offer_review" do
-    patch offer_review_url(@offer_review), params: { offer_review: { offer_id: @offer_review.offer_id, review: @offer_review.review, user_id: @offer_review.user_id } }, as: :json
+    patch offer_review_url(@offer_review), params: { offer_review: { offer_id: @offer_review.offer_id, review: @offer_review.review, contractor_id: @offer_review.contractor_id } }, as: :json
     assert_response 200
   end
 
