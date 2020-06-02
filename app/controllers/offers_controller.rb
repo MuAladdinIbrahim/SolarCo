@@ -6,7 +6,7 @@ class OffersController < ApplicationController
   def getOffers
     @offers = Offer.where(post_id: params[:post_id]).all
 
-    render json: @offers.as_json(include: [:contractor])
+    render json: @offers.as_json(include: {contractor: { methods: [:avatar_url] }})
   end
 
   # GET /offers

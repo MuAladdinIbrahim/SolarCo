@@ -33,7 +33,7 @@ class ContractorsController < ApplicationController
   # GET /contractors/1
   def show
     # Call the method avatar_url to send its return value with the response
-    render :json => @contractor.as_json
+    render :json => @contractor.as_json(methods: :avatar_url)
   end
 
 
