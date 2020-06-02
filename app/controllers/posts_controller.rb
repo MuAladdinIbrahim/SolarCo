@@ -53,7 +53,7 @@ class PostsController < ApplicationController
         include: { calculation: {
           except: :calculation_id
         } }
-      }} , :user])
+      }} , :user, :offers])
     else
       render json: {:error => "You are not authorized to view this post"}, status: :unauthorized
     end
@@ -61,7 +61,7 @@ class PostsController < ApplicationController
 
   # POST /posts
   def create
-    if can?(:create, Post)
+    # if can?(:create, Post)
       @post = Post.new(post_params)
       @post.user = User.find(current_user.id)
       @post.system = System.find(post_params['system_id'])
@@ -71,9 +71,9 @@ class PostsController < ApplicationController
       else
         render json: @post.errors, status: :unprocessable_entity
       end
-    else
-      render json: {:error => "You are not authorized to create post"}, status: :unauthorized
-    end
+    # else
+      # render json: {:error => "You are not authorized to create post"}, status: :unauthorized
+    # end
   end
 
   # PATCH/PUT /posts/1

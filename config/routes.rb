@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   ###################################################
 
   ######## Contractor Routes #########
+  get 'contractors/:id', to: 'contractors#show'
   put 'contractors/:id', to: 'contractors#update'
   put 'contractors/avatar/:id', to: 'contractors#updateAvatar'
   ###################################################
