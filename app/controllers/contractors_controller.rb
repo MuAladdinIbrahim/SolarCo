@@ -10,7 +10,7 @@ class ContractorsController < ApplicationController
   #     }
   #   }, status: 200
   # end
-  before_action :set_user, only: [:update, :updateAvatar]
+  before_action :set_user, only: [:update, :updateAvatar, :show]
 
   # PATCH/PUT /contractors/1
   def update
@@ -28,6 +28,12 @@ class ContractorsController < ApplicationController
     else
         render json: @contractor.errors, status: :unprocessable_entity
     end
+  end
+
+  # GET /contractors/1
+  def show
+    # Call the method avatar_url to send its return value with the response
+    render :json => @contractor.as_json
   end
 
 
