@@ -1,5 +1,5 @@
 class Calculation < ApplicationRecord
-  belongs_to :system
+  belongs_to :system, dependent: :destroy
 
   attr_accessor :panel_wt, :panels_no, :battery_dod, :battery_voltage, :battery_amp, :sys_circuits, :load_voltage
   
@@ -89,6 +89,15 @@ class Calculation < ApplicationRecord
         cb_rate = ((inverter_watt*1.9)/load_voltage).ceil()
         cable_rate = (1.3*cb_rate).ceil()
         {"inverter_max_rate" => (inverter_watt+100), "system_voltage" => load_voltage, "cable_current3" => "#{cable_rate}, stranded", "circuitBreaker_current3" => cb_rate}
+    end
+
+    def getCalculationsByUser(systems)
+      # systems = (System.all).find_by(user_id: user_id)
+      calc = [];
+      systems.each do |system|
+          calc << system.calculation
+      end
+      calc
     end
 
 end

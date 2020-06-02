@@ -3,7 +3,8 @@ class SystemsController < ApplicationController
 
   # GET /systems
   def index
-    @systems = getCalculations(System.where(user_id: current_user.id))
+    @system = System.new()
+    @systems = @system.getCalculationsId(System.where(user_id: current_user.id).order(created_at: :desc)) 
 
     render json: @systems
   end
@@ -15,19 +16,12 @@ class SystemsController < ApplicationController
 
   # POST /systems
   def create
-    if params[:lat] && params[:long]
-      res_loc = (Geocoder.search([params[:lat], params[:long]])[0].data).to_hash['address']
-
-      @system = System.create(latitude: params[:lat].to_f, longitude: params[:long].to_f, consumption: params[:consump], city: res_loc['city'],country: res_loc['country'], user_id: 1)
-    else
-      res_ip = (Geocoder.search(params[:ip])[0].data).to_hash
-      loc = res_ip['loc'].split(',') unless res_ip['loc'].nil?
-
-      @system = System.create(latitude: loc[0].to_f, longitude: loc[1].to_f, consumption: params[:consump], city: res_ip['region'],country: res_ip['country'], user_id: 1)
-    end
+    @system = System.new(system_params)
+    @system.user = current_user
 
     if @system.save
-      render json: @system, status: :created
+      @calculation = createCalculation(@system)
+      render json: @calculation, status: :created
     else
       render json: @system.errors, status: :unprocessable_entity
     end
@@ -55,15 +49,17 @@ class SystemsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def system_params
-      params.require(:system).permit()
+      params.require(:system).permit(:id, :latitude, :longitude, :city, :country, :consumption)
     end
 
-    def getCalculations(systems)
-      sys = [];
-      systems.each do |system|
-        sys << {"system" => system, "calculation_id" => system.calculation.id}
-      end
-      sys
+    def createCalculation(system)
+      @calculation = Calculation.new()
+
+      panel = @calculation.panel_Calculate(system.consumption, system.latitude)
+      battery = @calculation.battery_Calculate(panel['wh_per_day'], system.latitude)
+      componets = @calculation.inverter_mppt_Calculate()
+  
+      @calculation = Calculation.create(system_id: system.id, system_circuits: componets['inverters_num'], panels_num: panel['panels_no'], panel_watt: panel['panel_watt'], battery_Ah: battery['battery_amp'], batteries_num: battery['batteries_num'], inverter_watt: componets['inverter_watt'], mppt_amp: componets['mppt_amp'])
     end
 
 end

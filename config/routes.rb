@@ -15,11 +15,11 @@ Rails.application.routes.draw do
 
   ######## Calculations Routes #########
   post 'geocoder', to: 'geocoder#getLocation'
-  resources :calculations, except: [:update, :index]
+  resources :calculations, except: [:update]
   ###################################################
   
   ######### Systems Routes #########
-  resources :systems, only: [:index]
+  resources :systems, only: [:index, :create]
   ###################################################
 
   ######## Clients Routes #########
