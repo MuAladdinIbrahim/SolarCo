@@ -25,12 +25,18 @@ class OffersController < ApplicationController
   def create
     # if can?(:create, Offer)
       @offer = Offer.new(offer_params)
-      @offer.contractor =  Contractor.find(current_contractor.id)
-      @offer.post = Post.find(offer_params['post_id'])
-      if @offer.save
-        render json: @offer, status: :created, location: @offer
+      post = Post.find(offer_params['post_id'])
+      # can_create_offer(post.offer)
+      if can_create_offer(post.offer) #validate if the contractor has offer in the same post
+        @offer.contractor = Contractor.find(current_contractor.id)
+        @offer.post = post
+        if @offer.save
+          render json: @offer, status: :created, location: @offer
+        else
+          render json: @offer.errors, status: :unprocessable_entity
+        end
       else
-        render json: @offer.errors, status: :unprocessable_entity
+        render json: {:error => "You can't create more than one offer on the same post"}, status: :unauthorized
       end
     # else
     #   render json: {:error => "You are not authorized to create offer"}, status: :unauthorized
@@ -70,7 +76,18 @@ class OffersController < ApplicationController
       params.require(:offer).permit(:proposal,:price, :post_id, :status)
     end
 
-    def can_create_offer 
-
+    def can_create_offer(offers) #check if the contractor has offer on this post
+      for offer in offers do
+        puts offer.contractor.inspect
+        puts current_contractor.inspect
+        puts offers.inspect
+        if offer.contractor == current_contractor
+          return false #the contractor has offer on this post
+          puts "false"
+        # else
+        #   return true #the contractor dosen't has offer on this post
+        #   puts "true"
+        end
+      end
     end
 end
