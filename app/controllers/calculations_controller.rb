@@ -3,8 +3,9 @@ class CalculationsController < ApplicationController
 
   # GET /calculations
   def index
-    @calculations = getCalculations(current_user.systems)
-
+    @systems = (System.all).where(user_id: current_user.id)
+    @calculations = (Calculation.new).getCalculationsByUser(@systems)
+    
     render json: @calculations
   end
 
@@ -24,6 +25,7 @@ class CalculationsController < ApplicationController
   # POST /calculations
   def create    
     @system = createSystem
+    puts @system.errors if @system.errors
 
     @calculation = Calculation.new()
     panel = @calculation.panel_Calculate(@system.consumption, @system.latitude)
@@ -51,7 +53,7 @@ class CalculationsController < ApplicationController
   # DELETE /calculations/1
   def destroy
     @calculation.destroy
-    @calculation.system.destroy
+    # @calculation.system.destroy
   end
 
   private
@@ -63,21 +65,6 @@ class CalculationsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def calculation_params
       params.fetch(:calculation, {}).permit(:id)
-    end
-
-    def createSystem
-        res_ip = (Geocoder.search(params[:ip])[0].data).to_hash
-        loc = res_ip['loc'].split(',') unless res_ip['loc'].nil?
-  
-        @system = System.create(latitude: loc[0].to_f, longitude: loc[1].to_f, consumption: params[:consump], city: res_ip['region'],country: res_ip['country'], user_id: current_user.id)
-    end
-
-    def getCalculations(systems)
-      cals = [];
-      systems.each do |system|
-        cals << system.calculation
-      end
-      cals
     end
 
 end

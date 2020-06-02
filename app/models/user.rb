@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-    has_many :systems
+    has_many :systems, dependent: :destroy
 
     extend Devise::Models
     devise :database_authenticatable, 

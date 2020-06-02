@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   resources :offer_rates
   resources :offer_reviews
+  resources :offers
   resources :reviews
   resources :posts
   resources :users
@@ -18,6 +20,7 @@ Rails.application.routes.draw do
   ###################################################
   
   ######### Systems Routes #########
+  resources :systems, only: [:index, :create]
   ###################################################
 
   ######## Clients Routes #########
@@ -27,6 +30,7 @@ Rails.application.routes.draw do
   ###################################################
 
   ######## Contractor Routes #########
+  get 'contractors/:id', to: 'contractors#show'
   put 'contractors/:id', to: 'contractors#update'
   put 'contractors/avatar/:id', to: 'contractors#updateAvatar'
   ###################################################
