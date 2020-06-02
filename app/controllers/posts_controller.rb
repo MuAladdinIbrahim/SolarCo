@@ -23,7 +23,7 @@ class PostsController < ApplicationController
         puts "inside contractor"
         if(@posts != nil)
           puts "inside if in contractor"
-          render json: @posts.as_json(include: [:system,:user])
+          render json: @posts.as_json(include: [:system,:user,:offer])
           else 
             render json: {
               data:{
@@ -37,7 +37,7 @@ class PostsController < ApplicationController
 
   # GET /posts/1
   def show
-    render json: @post.as_json(include: [:system,:user])
+    render json: @post.as_json(include: [:system,:user,:offer])
   end
 
   # POST /posts

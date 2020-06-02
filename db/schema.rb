@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_30_192355) do
+ActiveRecord::Schema.define(version: 2020_06_01_061016) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,10 +82,30 @@ ActiveRecord::Schema.define(version: 2020_05_30_192355) do
     t.index ["uid", "provider"], name: "index_contractors_on_uid_and_provider", unique: true
   end
 
+  create_table "offer_rates", force: :cascade do |t|
+    t.decimal "rate"
+    t.bigint "user_id", null: false
+    t.bigint "offer_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["offer_id"], name: "index_offer_rates_on_offer_id"
+    t.index ["user_id"], name: "index_offer_rates_on_user_id"
+  end
+
+  create_table "offer_reviews", force: :cascade do |t|
+    t.text "review"
+    t.bigint "user_id", null: false
+    t.bigint "offer_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["offer_id"], name: "index_offer_reviews_on_offer_id"
+    t.index ["user_id"], name: "index_offer_reviews_on_user_id"
+  end
+
   create_table "offers", force: :cascade do |t|
     t.string "proposal"
     t.integer "price"
-    t.integer "status"
+    t.integer "status", default: 1
     t.bigint "contractor_id"
     t.bigint "post_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -149,6 +169,10 @@ ActiveRecord::Schema.define(version: 2020_05_30_192355) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "calculations", "systems"
+  add_foreign_key "offer_rates", "offers"
+  add_foreign_key "offer_rates", "users"
+  add_foreign_key "offer_reviews", "offers"
+  add_foreign_key "offer_reviews", "users"
   add_foreign_key "offers", "contractors"
   add_foreign_key "offers", "posts"
   add_foreign_key "posts", "systems"

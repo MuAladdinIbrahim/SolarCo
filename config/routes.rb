@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   resources :reviews
   resources :posts
   resources :users
-  
+  resources :offers
+
   mount_devise_token_auth_for 'User', at: 'user/auth'
   mount_devise_token_auth_for 'Contractor', at: 'contractor/auth'
   as :contractor do
