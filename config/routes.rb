@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
+  # mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  root to: 'admin/dashboard#index'
 
+  resources :offer_rates
+  resources :offer_reviews
   resources :offers
   resources :posts
   resources :users
@@ -14,33 +19,36 @@ Rails.application.routes.draw do
 
   ######## Calculations Routes #########
   post 'geocoder', to: 'geocoder#getLocation'
-  resources :calculations, except: [:update]
+  resources :calculations, only: [:index, :show]
   ###################################################
   
   ######### Systems Routes #########
-  resources :systems, only: [:index, :create]
+  resources :systems, only: [:index, :create, :destroy]
   ###################################################
 
   ######### ReviewsRoutes #########
   get 'offer_rates/per_contractor/:id', to: 'offer_rates#index'
   get 'offer_reviews/per_contractor/:id', to: 'offer_reviews#index'
-  resources :offer_rates, except: [:index]
-  resources :offer_reviews, except: [:index]
+  resources :offer_rates, only: []
+  resources :offer_reviews, only: []
   ###################################################
 
   ######## Clients Routes #########
   put 'clients/avatar/:id', to: 'clients#updateAvatar'
-  get 'clients/:id', to: 'clients#show'
-  put 'clients/:id', to: 'clients#update'
+  resources :clients, only: [:show, :update]
+  # get 'clients/:id', to: 'clients#show'
+  # put 'clients/:id', to: 'clients#update'
   ###################################################
 
   ######## Contractor Routes #########
-  get 'contractors/:id', to: 'contractors#show'
-  put 'contractors/:id', to: 'contractors#update'
   put 'contractors/avatar/:id', to: 'contractors#updateAvatar'
+  resources :contractors, only: [:show, :update]
+  # get 'contractors/:id', to: 'contractors#show'
+  # put 'contractors/:id', to: 'contractors#update'
   ###################################################
 
   ######## offers Route to get all offers on post #########
   get 'offers/post/:post_id', to: 'offers#getOffers'
   ###################################################
 end
+

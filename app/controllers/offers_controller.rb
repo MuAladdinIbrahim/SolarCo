@@ -1,4 +1,4 @@
-class OffersController < ApplicationController
+class OffersController < ApiController
   before_action :set_offer, only: [:show, :update, :destroy]
 
 

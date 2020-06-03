@@ -1,4 +1,4 @@
-class ContractorsController < ApplicationController
+class ContractorsController < ApiController
 
   # devise_token_auth_group :member, contains: [:user, :contractor]
   # before_action :authenticate_member!
