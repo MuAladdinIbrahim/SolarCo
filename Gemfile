@@ -45,7 +45,15 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise_token_auth'
 gem 'omniauth'
 gem 'rack-cors', :require => 'rack/cors'
+
+#geocoder
 gem 'geocoder'
+
+#admin
 # gem 'rails_admin', '~> 2.0.2'
 gem 'devise', '> 4.x'
 gem 'activeadmin'
+
+#faker 
+gem 'faker'
+

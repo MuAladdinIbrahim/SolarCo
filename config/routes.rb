@@ -7,10 +7,10 @@ Rails.application.routes.draw do
   resources :offer_rates
   resources :offer_reviews
   resources :offers
-  resources :reviews
   resources :posts
   resources :users
-  
+  resources :offers
+
   mount_devise_token_auth_for 'User', at: 'user/auth'
   mount_devise_token_auth_for 'Contractor', at: 'contractor/auth'
   as :contractor do
@@ -19,11 +19,18 @@ Rails.application.routes.draw do
 
   ######## Calculations Routes #########
   post 'geocoder', to: 'geocoder#getLocation'
-  resources :calculations, except: [:update, :index]
+  resources :calculations, except: [:update]
   ###################################################
   
   ######### Systems Routes #########
-  resources :systems, only: [:index]
+  resources :systems, only: [:index, :create]
+  ###################################################
+
+  ######### ReviewsRoutes #########
+  get 'offer_rates/per_contractor/:id', to: 'offer_rates#index'
+  get 'offer_reviews/per_contractor/:id', to: 'offer_reviews#index'
+  resources :offer_rates, except: [:index]
+  resources :offer_reviews, except: [:index]
   ###################################################
 
   ######## Clients Routes #########
@@ -33,6 +40,7 @@ Rails.application.routes.draw do
   ###################################################
 
   ######## Contractor Routes #########
+  get 'contractors/:id', to: 'contractors#show'
   put 'contractors/:id', to: 'contractors#update'
   put 'contractors/avatar/:id', to: 'contractors#updateAvatar'
   ###################################################
