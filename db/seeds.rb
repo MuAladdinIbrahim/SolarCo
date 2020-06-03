@@ -12,26 +12,28 @@ require 'faker'
 #     address: Faker::Address.full_address,
 # )
 
-def createUserContractor(mail, name, password)
+def createUserContractor(mail, name, password, username)
     User.create!(
         email: mail, 
-        name: name, 
+        name: name,
+        username: username,
         password: password)
     Contractor.create!(
         email: mail, 
         name: name, 
+        username: username,
         password: password,
         address: Faker::Address.full_address,
     )
 end
 
-createUserContractor("ahmed@mail.com", "ahmed", "123456");
-createUserContractor("mohamed@mail.com", "mohamed", "123456");
-createUserContractor("nouran@mail.com", "nouran", "123456");
-createUserContractor("zeyad@mail.com", "zeyad", "123456");
+createUserContractor("ahmed@mail.com", "ahmed", "123456", "ahmed");
+createUserContractor("mohamed@mail.com", "mohamed", "123456", "mohamed");
+createUserContractor("nouran@mail.com", "nouran", "123456", "nouran");
+createUserContractor("zeyad@mail.com", "zeyad", "123456", "zeyad");
 
 2.times do 
-    createUserContractor(Faker::Internet.email, Faker::Name.name, "123456"); 
+    createUserContractor(Faker::Internet.email, Faker::Name.name, "123456", Faker::Name.unique.name); 
 end 
 
 10.times do
