@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  # devise_for :admin_users, ActiveAdmin::Devise.config
+  # ActiveAdmin.routes(self)
+  # mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  root to: 'admin/dashboard#index'
+
   resources :offer_rates
   resources :offer_reviews
   resources :offers
@@ -37,3 +41,4 @@ Rails.application.routes.draw do
   get 'offers/post/:post_id', to: 'offers#getOffers'
   ###################################################
 end
+
