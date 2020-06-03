@@ -10,6 +10,12 @@ class System < ApplicationRecord
         true if Post.find_by(system_id: sys_id)
     end
 
+    def onOffer? (system)
+        unless (system.post).nil?
+            true if Offer.find_by(post_id: (system.post.id))
+        end
+    end
+
     def getCalculationsId(systems)
         sys = [];
         systems.each do |system|
@@ -17,6 +23,5 @@ class System < ApplicationRecord
         end
         sys
     end
-
 
 end

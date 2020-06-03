@@ -95,7 +95,7 @@ class Calculation < ApplicationRecord
       # systems = (System.all).find_by(user_id: user_id)
       calc = [];
       systems.each do |system|
-          calc << system.calculation
+          calc << {"calculation" => system.calculation, "system" => system}
       end
       calc
     end
