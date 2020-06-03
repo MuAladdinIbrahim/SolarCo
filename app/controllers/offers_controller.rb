@@ -58,11 +58,11 @@ class OffersController < ApplicationController
 
   # DELETE /offers/1
   def destroy
-    if can?(:destroy, @offer)
+    # if can?(:destroy, @offer)
       @offer.destroy
-    else
-      render json: {:error => "You are not authorized to delete this offer"}, status: :unauthorized
-    end
+    # else
+      # render json: {:error => "You are not authorized to delete this offer"}, status: :unauthorized
+    # end
   end
 
   private
