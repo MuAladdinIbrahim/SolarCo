@@ -90,3 +90,9 @@ end
         user_id: (User.all).sample.id,
     )
 end
+ 
+admin = AdminUser.new
+admin.email = "admin@admin.com"
+admin.password = "admin123"
+admin.password_confirmation = "admin123"
+admin.save!
