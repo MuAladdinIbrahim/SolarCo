@@ -84,22 +84,22 @@ ActiveRecord::Schema.define(version: 2020_06_01_061016) do
 
   create_table "offer_rates", force: :cascade do |t|
     t.decimal "rate"
-    t.bigint "contractor_id", null: false
+    t.bigint "user_id", null: false
     t.bigint "offer_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["contractor_id"], name: "index_offer_rates_on_contractor_id"
     t.index ["offer_id"], name: "index_offer_rates_on_offer_id"
+    t.index ["user_id"], name: "index_offer_rates_on_user_id"
   end
 
   create_table "offer_reviews", force: :cascade do |t|
     t.text "review"
-    t.bigint "contractor_id", null: false
+    t.bigint "user_id", null: false
     t.bigint "offer_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["contractor_id"], name: "index_offer_reviews_on_contractor_id"
     t.index ["offer_id"], name: "index_offer_reviews_on_offer_id"
+    t.index ["user_id"], name: "index_offer_reviews_on_user_id"
   end
 
   create_table "offers", force: :cascade do |t|
@@ -169,10 +169,10 @@ ActiveRecord::Schema.define(version: 2020_06_01_061016) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "calculations", "systems"
-  add_foreign_key "offer_rates", "contractors"
   add_foreign_key "offer_rates", "offers"
-  add_foreign_key "offer_reviews", "contractors"
+  add_foreign_key "offer_rates", "users"
   add_foreign_key "offer_reviews", "offers"
+  add_foreign_key "offer_reviews", "users"
   add_foreign_key "offers", "contractors"
   add_foreign_key "offers", "posts"
   add_foreign_key "posts", "systems"
