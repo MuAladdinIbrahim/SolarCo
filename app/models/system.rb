@@ -18,5 +18,4 @@ class System < ApplicationRecord
         sys
     end
 
-
 end
