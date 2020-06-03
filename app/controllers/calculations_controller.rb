@@ -1,4 +1,4 @@
-class CalculationsController < ApplicationController
+class CalculationsController < ApiController
   before_action :set_calculation, only: [:show, :update, :destroy]
 
   # GET /calculations

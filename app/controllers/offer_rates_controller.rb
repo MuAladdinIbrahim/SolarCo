@@ -1,4 +1,4 @@
-class OfferRatesController < ApplicationController
+class OfferRatesController < ApiController
   before_action :set_offer_rate, only: [:show, :update, :destroy]
 
   # GET /offer_rates

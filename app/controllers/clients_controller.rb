@@ -1,4 +1,4 @@
-class ClientsController < ApplicationController
+class ClientsController < ApiController
     before_action :set_user, only: [:updateAvatar, :show, :update]
 
     # PATCH/PUT /clients/avatar/1
