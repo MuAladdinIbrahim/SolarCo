@@ -38,7 +38,11 @@ class SystemsController < ApiController
 
   # DELETE /systems/1
   def destroy
-    @system.destroy
+    if !@system.onOffer? (@system)
+      @system.destroy
+    else
+    render json: {"error" => "This System under Offer..!!"}
+    end
   end
 
   private

@@ -5,7 +5,7 @@ class CalculationsController < ApiController
   def index
     @systems = (System.all).where(user_id: current_user.id)
     @calculations = (Calculation.new).getCalculationsByUser(@systems)
-    
+
     render json: @calculations
   end
 
@@ -24,20 +24,12 @@ class CalculationsController < ApiController
 
   # POST /calculations
   def create    
-    @system = createSystem
-    puts @system.errors if @system.errors
+    @calculations = Calculation.new(calculation_params)
 
-    @calculation = Calculation.new()
-    panel = @calculation.panel_Calculate(@system.consumption, @system.latitude)
-    battery = @calculation.battery_Calculate(panel['wh_per_day'], @system.latitude)
-    componets = @calculation.inverter_mppt_Calculate()
-
-    @calculation = Calculation.create(system_id: @system.id, system_circuits: componets['inverters_num'], panels_num: panel['panels_no'], panel_watt: panel['panel_watt'], battery_Ah: battery['battery_amp'], batteries_num: battery['batteries_num'], inverter_watt: componets['inverter_watt'], mppt_amp: componets['mppt_amp'])
-
-    unless @calculation.nil?
-      render json: @calculation
+    if @calculations.save
+      render json: @calculations, status: :created, location: @calculations
     else
-      render json: @calculation.errors, status: :unprocessable_entity
+      render json: @calculations.errors, status: :unprocessable_entity
     end
   end
 
