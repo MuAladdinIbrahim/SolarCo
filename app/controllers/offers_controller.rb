@@ -23,7 +23,7 @@ class OffersController < ApplicationController
 
   # POST /offers
   def create
-    # if can?(:create, Offer)
+    # if can?(:create, Offer.new)
       @offer = Offer.new(offer_params)
       post = Post.find(offer_params['post_id'])
       # can_create_offer(post.offer)

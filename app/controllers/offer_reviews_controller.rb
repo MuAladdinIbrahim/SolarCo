@@ -3,7 +3,8 @@ class OfferReviewsController < ApplicationController
 
   # GET /offer_reviews
   def index
-    @offer_reviews = OfferReview.all
+    # @offer_reviews = OfferReview.where(contractor_id: params[:id])
+    @offer_reviews = (Contractor.find(params[:id])).offer_reviews
 
     render json: @offer_reviews
   end
@@ -46,6 +47,6 @@ class OfferReviewsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def offer_review_params
-      params.require(:offer_review).permit(:review, :user_id, :offer_id)
+      params.require(:offer_review).permit(:review, :contractor_id, :offer_id)
     end
 end

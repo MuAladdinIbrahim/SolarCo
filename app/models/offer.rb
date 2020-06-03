@@ -1,11 +1,11 @@
 class Offer < ApplicationRecord
   belongs_to :contractor
   belongs_to :post
-
-  enum status: { accepted: 0, rejected: 1 }
+  has_many :offer_rates
+  has_many :offer_reviews
+  
+  enum status: [:accepted, :rejected]
 
   validates :proposal, :price, presence: true
-
- 
   
 end
