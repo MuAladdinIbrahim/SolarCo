@@ -126,8 +126,8 @@ ActiveRecord::Schema.define(version: 2020_06_01_061016) do
   end
 
   create_table "systems", force: :cascade do |t|
-    t.decimal "latitude", precision: 10, scale: 8, default: "0.0"
-    t.decimal "longitude", precision: 10, scale: 8, default: "0.0"
+    t.decimal "latitude", precision: 17, scale: 14, default: "0.0"
+    t.decimal "longitude", precision: 17, scale: 14, default: "0.0"
     t.integer "consumption", default: 0
     t.string "city", null: false
     t.string "country", null: false
