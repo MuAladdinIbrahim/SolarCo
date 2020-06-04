@@ -1,3 +1,11 @@
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
+#
+# Examples:
+#
+#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
+#   Character.create(name: 'Luke', movie: movies.first)
+# User.create(email: 'user@example.com', nickname: 'UOne', name: 'User One', password: "monkey67")AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
 require 'faker'
 
 # User.create!(email: 'user@example.com', nickname: 'UOne', name: 'User One', password: "monkey67")
@@ -12,26 +20,28 @@ require 'faker'
 #     address: Faker::Address.full_address,
 # )
 
-def createUserContractor(mail, name, password)
+def createUserContractor(mail, name, password, username)
     User.create!(
         email: mail, 
-        name: name, 
+        name: name,
+        username: username,
         password: password)
     Contractor.create!(
         email: mail, 
         name: name, 
+        username: username,
         password: password,
         address: Faker::Address.full_address,
     )
 end
 
-createUserContractor("ahmed@mail.com", "ahmed", "123456");
-createUserContractor("mohamed@mail.com", "mohamed", "123456");
-createUserContractor("nouran@mail.com", "nouran", "123456");
-createUserContractor("zeyad@mail.com", "zeyad", "123456");
+createUserContractor("ahmed@mail.com", "ahmed", "123456", "ahmed");
+createUserContractor("mohamed@mail.com", "mohamed", "123456", "mohamed");
+createUserContractor("nouran@mail.com", "nouran", "123456", "nouran");
+createUserContractor("zeyad@mail.com", "zeyad", "123456", "zeyad");
 
 2.times do 
-    createUserContractor(Faker::Internet.email, Faker::Name.name, "123456"); 
+    createUserContractor(Faker::Internet.email, Faker::Name.name, "123456", Faker::Name.unique.name); 
 end 
 
 10.times do
@@ -82,3 +92,9 @@ end
         user_id: (User.all).sample.id,
     )
 end
+ 
+admin = AdminUser.new
+admin.email = "admin@admin.com"
+admin.password = "admin123"
+admin.password_confirmation = "admin123"
+admin.save!

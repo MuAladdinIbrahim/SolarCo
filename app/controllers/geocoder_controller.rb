@@ -1,4 +1,4 @@
-class GeocoderController < ApplicationController
+class GeocoderController < ApiController
 
   def getLocation    
     if params[:lat] && params[:long] && res_loc = (Geocoder.search([params[:lat].round(4), params[:long].round(4)])[0].data).to_hash['address']

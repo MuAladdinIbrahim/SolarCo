@@ -1,6 +1,6 @@
-class ApplicationController < ActionController::API
-# 	devise_token_auth_group :member, contains: [:user, :contractor]
-#   	before_action :authenticate_member!
+class ApplicationController < ActionController::Base
+	# protect_from_forgery with: :exception
+    skip_before_action :verify_authenticity_token
 
 #   def members_only
 #     render json: {

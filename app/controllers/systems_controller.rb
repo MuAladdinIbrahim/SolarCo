@@ -1,4 +1,4 @@
-class SystemsController < ApplicationController
+class SystemsController < ApiController
   before_action :set_system, only: [:show, :update, :destroy]
 
   # GET /systems

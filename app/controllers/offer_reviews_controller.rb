@@ -1,4 +1,4 @@
-class OfferReviewsController < ApplicationController
+class OfferReviewsController < ApiController
   before_action :set_offer_review, only: [:show, :update, :destroy]
 
   # GET /offer_reviews
