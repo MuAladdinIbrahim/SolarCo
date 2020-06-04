@@ -52,6 +52,9 @@ ActiveRecord::Schema.define(version: 2020_06_01_061016) do
 
   create_table "contractors", force: :cascade do |t|
     t.string "address"
+    t.string "mobileNumber"
+    t.string "website"
+    t.string "fax"
     t.boolean "is_verified"
     t.integer "rate", default: 0
     t.string "provider", default: "email", null: false

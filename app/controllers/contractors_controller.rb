@@ -58,6 +58,6 @@ class ContractorsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def contractor_params
-        params.require(:contractor).permit(:has_office,:address, :avatar)
+        params.require(:contractor).permit(:has_office,:address, :avatar, :mobileNumber, :fax, :website)
     end
 end
