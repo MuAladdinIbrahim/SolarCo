@@ -32,6 +32,9 @@ def createUserContractor(mail, name, password, username)
         username: username,
         password: password,
         address: Faker::Address.full_address,
+        mobileNumber: Faker::PhoneNumber.cell_phone,
+        website: Faker::Internet.url,
+        fax: Faker::Internet.email,
     )
 end
 
@@ -71,7 +74,7 @@ end
     )
 end
 
-20.times do
+30.times do
     Offer.create!(
         proposal: Faker::Lorem.sentence(word_count: 20, supplemental: true),
         price: Faker::Number.between(from: 1000, to: 10000),
