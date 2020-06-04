@@ -106,6 +106,6 @@ class PostsController < ApiController
 
     # Only allow a trusted parameter "white list" through.
     def post_params
-      params.require(:post).permit(:title,:description,:system_id)
+      params.require(:post).permit(:title,:description,:system_id, :closed)
     end
 end

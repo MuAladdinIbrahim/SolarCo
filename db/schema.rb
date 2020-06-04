@@ -145,6 +145,7 @@ ActiveRecord::Schema.define(version: 2020_06_03_170514) do
   end
 
   create_table "posts", force: :cascade do |t|
+    t.boolean "closed", default: false
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
