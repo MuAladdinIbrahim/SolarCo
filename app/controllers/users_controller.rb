@@ -16,7 +16,6 @@ class UsersController < ApiController
   # POST /users
   def create
     @user = User.new(user_params)
-    puts @user
 
     if @user.save
       render json: @user, status: :created, location: @user

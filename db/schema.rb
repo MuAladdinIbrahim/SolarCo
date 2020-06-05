@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(version: 2020_06_03_170514) do
     t.decimal "latitude", precision: 17, scale: 14, default: "0.0"
     t.decimal "longitude", precision: 17, scale: 14, default: "0.0"
     t.integer "consumption", default: 0
+    t.string "address"
     t.string "city", null: false
     t.string "country", null: false
     t.bigint "user_id", null: false

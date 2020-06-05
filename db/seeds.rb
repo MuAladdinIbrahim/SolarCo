@@ -52,6 +52,7 @@ end
         consumption: Faker::Number.between(from: 50, to: 100),
         latitude: (Faker::Address.latitude).to_f,
         longitude: (Faker::Address.longitude).to_f,
+        address: Faker::Address.full_address,
         city: Faker::Address.city,
         country: Faker::Address.country,
         user_id: (User.all.sample).id

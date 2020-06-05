@@ -17,7 +17,7 @@ class ClientsController < ApiController
     end
 
     def update
-        if @client.update(uid: params['email'], email: params['email'], name: params['name'])
+        if @client.update(client_params)
             render json: @client
         else
             render json: @client.errors, status: :unprocessable_entity
@@ -33,6 +33,6 @@ class ClientsController < ApiController
 
     # Only allow a trusted parameter "white list" through.
     def client_params
-        params.require(:client).permit(:avatar)
+        params.require(:client).permit(:id, :avatar, :email, :uid, :name, :username, :provider, :allow_password_change, :image)
     end
 end
