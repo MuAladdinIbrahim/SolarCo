@@ -50,8 +50,8 @@ end
 10.times do
     System.create!(
         consumption: Faker::Number.between(from: 50, to: 100),
-        latitude: (Faker::Address.latitude).to_f,
-        longitude: (Faker::Address.longitude).to_f,
+        latitude: (Faker::Address.latitude).to_f.round(6),
+        longitude: (Faker::Address.longitude).to_f.round(6),
         address: Faker::Address.full_address,
         city: Faker::Address.city,
         country: Faker::Address.country,
