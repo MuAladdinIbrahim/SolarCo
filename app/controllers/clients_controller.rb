@@ -1,4 +1,4 @@
-class ClientsController < ApplicationController
+class ClientsController < ApiController
     before_action :set_user, only: [:updateAvatar, :show, :update]
 
     # PATCH/PUT /clients/avatar/1
@@ -17,7 +17,7 @@ class ClientsController < ApplicationController
     end
 
     def update
-        if @client.update(uid: params['email'], email: params['email'], name: params['name'])
+        if @client.update(client_params)
             render json: @client
         else
             render json: @client.errors, status: :unprocessable_entity
@@ -33,6 +33,6 @@ class ClientsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def client_params
-        params.require(:client).permit(:avatar)
+        params.require(:client).permit(:id, :avatar, :email, :uid, :name, :username, :provider, :allow_password_change, :image)
     end
 end

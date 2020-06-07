@@ -49,8 +49,11 @@ gem 'rack-cors', :require => 'rack/cors'
 #geocoder
 gem 'geocoder'
 
-#faker 
+# admin
+gem 'rails_admin', '~> 2.0.2'
+gem 'devise', '> 4.x'
+gem 'activeadmin'
+
+# #faker 
 gem 'faker'
 
-#admin
-gem 'rails_admin', '~> 2.0.2'

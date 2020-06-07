@@ -1,4 +1,4 @@
-class ContractorsController < ApplicationController
+class ContractorsController < ApiController
 
   # devise_token_auth_group :member, contains: [:user, :contractor]
   # before_action :authenticate_member!
@@ -58,6 +58,6 @@ class ContractorsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def contractor_params
-        params.require(:contractor).permit(:has_office,:address, :avatar)
+        params.require(:contractor).permit(:id, :name, :username, :uid, :has_office,:address, :avatar, :mobileNumber, :fax, :website)
     end
 end

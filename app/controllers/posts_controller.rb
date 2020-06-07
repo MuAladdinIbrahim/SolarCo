@@ -1,4 +1,4 @@
-class PostsController < ApplicationController
+class PostsController < ApiController
   before_action :set_post, only: [:show, :update, :destroy]
 
   # GET /posts
@@ -106,6 +106,6 @@ class PostsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def post_params
-      params.require(:post).permit(:title,:description,:system_id)
+      params.require(:post).permit(:title,:description,:system_id, :closed)
     end
 end

@@ -1,4 +1,4 @@
-class OffersController < ApplicationController
+class OffersController < ApiController
   before_action :set_offer, only: [:show, :update, :destroy]
 
 
@@ -6,7 +6,7 @@ class OffersController < ApplicationController
   def getOffers
     @offers = Offer.where(post_id: params[:post_id]).all
 
-    render json: @offers.as_json(include: {contractor: { methods: [:avatar_url] }})
+    render json: @offers.as_json(include: [{contractor: { methods: [:avatar_url] }}, :post])
   end
 
   # GET /offers
@@ -26,8 +26,7 @@ class OffersController < ApplicationController
     # if can?(:create, Offer.new)
       @offer = Offer.new(offer_params)
       post = Post.find(offer_params['post_id'])
-      # can_create_offer(post.offer)
-      if can_create_offer(post.offer) #validate if the contractor has offer in the same post
+      if contractor_has_mulitble_offers_validation(post.offer) && !after_closing_post_validation(post) #validate if the contractor has offer in the same post & after cloing post validation
         @offer.contractor = Contractor.find(current_contractor.id)
         @offer.post = post
         if @offer.save
@@ -46,23 +45,32 @@ class OffersController < ApplicationController
   # PATCH/PUT /offers/1
   def update
     # if can?(:update, @offer)
+    post = Post.find(offer_params['post_id'])
+    if !after_closing_post_validation(post)
       if @offer.update(offer_params)
         render json: @offer
       else
         render json: @offer.errors, status: :unprocessable_entity
       end
-    # else
+    else
+      render json: {:error => "You are not authorized to update this offer"}, status: :unauthorized
+    end
+      # else
     #   render json: {:error => "You are not authorized to update this offer"}, status: :unauthorized
     # end
   end
 
   # DELETE /offers/1
   def destroy
-    if can?(:destroy, @offer)
+    # if can?(:destroy, @offer)
+    if !after_closing_post_validation(@offer.post)
       @offer.destroy
     else
       render json: {:error => "You are not authorized to delete this offer"}, status: :unauthorized
     end
+    # else
+      # render json: {:error => "You are not authorized to delete this offer"}, status: :unauthorized
+    # end
   end
 
   private
@@ -76,18 +84,19 @@ class OffersController < ApplicationController
       params.require(:offer).permit(:proposal,:price, :post_id, :status)
     end
 
-    def can_create_offer(offers) #check if the contractor has offer on this post
+    def contractor_has_mulitble_offers_validation(offers) #check if the contractor has offer on this post
       for offer in offers do
-        puts offer.contractor.inspect
-        puts current_contractor.inspect
-        puts offers.inspect
-        if offer.contractor == current_contractor
+        if offer.contractor == current_contractor 
           return false #the contractor has offer on this post
-          puts "false"
-        # else
-        #   return true #the contractor dosen't has offer on this post
-        #   puts "true"
         end
+      end
+    end
+
+    def after_closing_post_validation(post)
+      # puts post.closed.inspect 
+      if post.closed == true
+        # puts post.closed.inspect
+        return false #cant make crud on closed post
       end
     end
 end
