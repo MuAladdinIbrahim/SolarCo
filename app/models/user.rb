@@ -3,6 +3,8 @@ class User < ApplicationRecord
     has_many :offer_rates
     has_many :offer_reviews
     # has_many :calculations, through: :systems
+    has_many :messages, as: :messagable
+    has_many :chatrooms, through: :messages, dependent: :destroy
 
     extend Devise::Models
     devise :database_authenticatable, 

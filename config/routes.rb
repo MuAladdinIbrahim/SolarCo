@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  mount ActionCable.server => '/cable'
 
   resources :offers
   resources :posts
@@ -19,6 +20,10 @@ Rails.application.routes.draw do
   
   ######### Systems Routes #########
   resources :systems, only: [:index, :create, :destroy]
+  ###################################################
+
+  ######### Chat Routes #########
+  get 'messages/:user_id/:contractor_id', to: 'messages#index'
   ###################################################
 
   ######### ReviewsRoutes #########
