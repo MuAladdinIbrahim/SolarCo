@@ -3,13 +3,12 @@ class PostsController < ApiController
 
   # GET /posts
   def index
-
-      puts "out of if" 
       if(current_user)
-        @posts = Post.where(user_id: current_user.id)
-        puts "inside user"
+        @posts = Post.where(user_id: current_user.id, closed: false)
+        if(approved_params['closed'] == 'closed')
+           @posts = Post.where(user_id: current_user.id, closed: true)
+        end
         if(@posts != nil)
-          # render json: @posts.as_json(include: [:system,:user])
           render json: @posts.as_json(include: [{system: {
             include: { calculation: {
               except: :calculation_id
@@ -24,10 +23,8 @@ class PostsController < ApiController
         end
       end
       if(current_contractor)
-        @posts = Post.all
-        puts "inside contractor"
+        @posts = Post.where(closed: false)
         if(@posts != nil)
-          puts "inside if in contractor"
           # render json: @posts.as_json(include: [:system,:user])
           render json: @posts.as_json(include: [{system: {
             include: { calculation: {
@@ -79,10 +76,15 @@ class PostsController < ApiController
   # PATCH/PUT /posts/1
   def update
     if can?(:update, @post)
-      if @post.update(post_params)
-        render json: @post
-      else
-        render json: @post.errors, status: :unprocessable_entity
+      if @post.closed
+        render json: {:error => "Archieved Post can not be updated"}
+      end
+      unless @post.closed
+        if @post.update(post_params)
+          render json: @post
+        else
+          render json: @post.errors, status: :unprocessable_entity
+        end
       end
     else
       render json: {:error => "You are not authorized to update this post"}, status: :unauthorized
@@ -91,10 +93,15 @@ class PostsController < ApiController
 
   # DELETE /posts/1
   def destroy
-    if can?(:destroy, @post)
-      @post.destroy
-    else
-      render json: {:error => "You are not authorized to delete this post"}, status: :unauthorized
+    if @post.closed
+      render json: {:error => "Archieved Post can not be Deleted"}
+    end
+    unless @post.closed
+      if can?(:destroy, @post)
+        @post.destroy
+      else
+        render json: {:error => "You are not authorized to delete this post"}, status: :unauthorized
+      end
     end
   end
 
@@ -107,5 +114,9 @@ class PostsController < ApiController
     # Only allow a trusted parameter "white list" through.
     def post_params
       params.require(:post).permit(:title,:description,:system_id, :closed)
+    end
+
+    def approved_params
+      params.permit(:closed)
     end
 end
