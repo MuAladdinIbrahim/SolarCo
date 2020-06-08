@@ -3,13 +3,12 @@ class PostsController < ApiController
 
   # GET /posts
   def index
-
-      puts "out of if" 
       if(current_user)
-        @posts = Post.where(user_id: current_user.id)
-        puts "inside user"
+        @posts = Post.where(user_id: current_user.id, closed: false)
+        if(approved_params['closed'] == 'closed')
+           @posts = Post.where(user_id: current_user.id, closed: true)
+        end
         if(@posts != nil)
-          # render json: @posts.as_json(include: [:system,:user])
           render json: @posts.as_json(include: [{system: {
             include: { calculation: {
               except: :calculation_id
@@ -24,10 +23,8 @@ class PostsController < ApiController
         end
       end
       if(current_contractor)
-        @posts = Post.all
-        puts "inside contractor"
+        @posts = Post.where(closed: false)
         if(@posts != nil)
-          puts "inside if in contractor"
           # render json: @posts.as_json(include: [:system,:user])
           render json: @posts.as_json(include: [{system: {
             include: { calculation: {
@@ -107,5 +104,9 @@ class PostsController < ApiController
     # Only allow a trusted parameter "white list" through.
     def post_params
       params.require(:post).permit(:title,:description,:system_id, :closed)
+    end
+
+    def approved_params
+      params.permit(:closed)
     end
 end
