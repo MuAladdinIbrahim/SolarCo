@@ -76,10 +76,15 @@ class PostsController < ApiController
   # PATCH/PUT /posts/1
   def update
     if can?(:update, @post)
-      if @post.update(post_params)
-        render json: @post
-      else
-        render json: @post.errors, status: :unprocessable_entity
+      if @post.closed
+        render json: {:error => "Archieved Post can not be updated"}
+      end
+      unless @post.closed
+        if @post.update(post_params)
+          render json: @post
+        else
+          render json: @post.errors, status: :unprocessable_entity
+        end
       end
     else
       render json: {:error => "You are not authorized to update this post"}, status: :unauthorized
@@ -88,10 +93,15 @@ class PostsController < ApiController
 
   # DELETE /posts/1
   def destroy
-    if can?(:destroy, @post)
-      @post.destroy
-    else
-      render json: {:error => "You are not authorized to delete this post"}, status: :unauthorized
+    if @post.closed
+      render json: {:error => "Archieved Post can not be Deleted"}
+    end
+    unless @post.closed
+      if can?(:destroy, @post)
+        @post.destroy
+      else
+        render json: {:error => "You are not authorized to delete this post"}, status: :unauthorized
+      end
     end
   end
 
