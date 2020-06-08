@@ -30,6 +30,8 @@ Rails.application.routes.draw do
 
   ######### Chat Routes #########
   get 'messages/:user_id/:contractor_id', to: 'messages#index'
+  get 'chatrooms/clients/:id', to: 'chatrooms#clientChats'
+  get 'chatrooms/contractors/:id', to: 'chatrooms#contractorChats'
   ###################################################
 
   ######### ReviewsRoutes #########
