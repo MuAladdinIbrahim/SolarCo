@@ -54,4 +54,21 @@ Rails.application.configure do
 
   # API url in development
   config.api_url = 'http://localhost:3000'
+
+
+  config.action_mailer.delivery_method = :smtp
+  
+
+  config.action_mailer.smtp_settings = {
+  user_name:      'whdan27@gmail.com',
+  password:       'nziidvmyjzsvasjh',
+  domain:         'gmail.com',
+  address:       'smtp.gmail.com',
+  port:          '587',
+  authentication: :plain,
+  enable_starttls_auto: true
+
+}
+# Default Mailer Host
+Rails.application.routes.default_url_options[:host] = 'http://localhost:3000'
 end
