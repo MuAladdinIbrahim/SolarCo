@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'notification/index'
   mount ActionCable.server => '/cable'
   
   devise_for :admin_users, ActiveAdmin::Devise.config
@@ -56,5 +57,8 @@ Rails.application.routes.draw do
   ######## offers Route to get all offers on post #########
   get 'offers/post/:post_id', to: 'offers#getOffers'
   ###################################################
+  get 'notifications', to: 'notification#index'
+  get 'notifications/:id', to: 'notification#show'
+
 end
 

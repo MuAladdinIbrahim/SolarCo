@@ -1,4 +1,6 @@
 class Offer < ApplicationRecord
+  include PublicActivity::Model
+  tracked owner: ->(controller, model) { controller && controller.current_user }
   belongs_to :contractor
   belongs_to :post, :counter_cache => true
   has_many :offer_rates, dependent: :destroy
