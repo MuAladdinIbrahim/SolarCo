@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
+  
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   # mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
@@ -24,6 +26,10 @@ Rails.application.routes.draw do
   
   ######### Systems Routes #########
   resources :systems, only: [:index, :create, :destroy]
+  ###################################################
+
+  ######### Chat Routes #########
+  get 'messages/:user_id/:contractor_id', to: 'messages#index'
   ###################################################
 
   ######### ReviewsRoutes #########

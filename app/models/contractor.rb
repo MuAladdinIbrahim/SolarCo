@@ -11,6 +11,8 @@ class Contractor < ActiveRecord::Base
   has_many :offer_rates, through: :offer
   has_many :offer_reviews, through: :offer
   has_one_attached :avatar
+  has_many :messages, as: :messagable
+  has_many :chatrooms, through: :messages, dependent: :destroy
 
   # Returns the url path for the avatar blob
   def avatar_url
