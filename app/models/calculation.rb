@@ -4,14 +4,16 @@ class Calculation < ApplicationRecord
   attr_accessor :panel_wt, :panels_no, :battery_dod, :battery_voltage, :battery_amp, :sys_circuits, :load_voltage
   
   #### Panel #####
-  def panel_Calculate(consumption, lat)
-    puts "consump: #{consumption}"
+  def panel_Calculate(system)
+    puts system.latitude.inspect
     @panel_wt = 250 ## to set voltage of PV_panel
-    wh_per_day = 1.1*(consumption/30)*1000
-    if lat.abs() < 70
-      gen_factor = ((90/lat.abs()) * 2.1).ceil(2) if lat.abs() > 30 || 6.5 #Generation Factor ~ sun rise hours 
+    wh_per_day = (system.consumption/30)*1000
+    wh_per_day *= 0.2 if system.backup
+    if system.latitude.abs() < 70
+      gen_factor = ((90/system.latitude.abs()) * 1.78).ceil(2) if system.latitude.abs() > 25 || 6.5 #Generation Factor ~ sun rise hours 
     end
-    tot_power = (wh_per_day*1.3 / gen_factor).ceil(-2)
+
+    tot_power = (wh_per_day*1.35 / gen_factor).ceil(-2)
     @panels_no = ( tot_power / 250).ceil()
     @panels_no += 1 if @panels_no.odd? || @panels_no == 0
 
@@ -24,7 +26,7 @@ class Calculation < ApplicationRecord
     @battery_voltage = 12   #Battery Voltage
     @battery_amp = 200
     if lat.abs() < 70
-      cloudy_days = ((lat.abs()/90)*5.5).ceil(2) if lat.abs() > 30 || 1 #Cloudy days without charging ~ climate
+      cloudy_days = ((lat.abs()/90)*5.5).ceil(2) if lat.abs() > 30 || 1.2 #Cloudy days without charging ~ climate
     end 
     battery_losses_factor = (0.95 - lat.abs()*0.0035).ceil(2) #Battery Losses ~ Temperature 
     system_capacity = ((wh_per_day*cloudy_days)/(battery_losses_factor*@battery_dod*@battery_voltage*2)).ceil()
@@ -39,12 +41,13 @@ class Calculation < ApplicationRecord
   def inverter_mppt_Calculate
     inverter_watt = ((@panels_no*@panel_wt)/0.7).ceil(3)
     @sys_circuits = 1
-    if inverter_watt > 2000
-      @sys_circuits = (((inverter_watt/2000)+0.4).ceil(1)).round()
+    if inverter_watt > 2500
+      @sys_circuits = (((inverter_watt/2500)+0.4).ceil(1)).round()
       @sys_circuits += 1 if @sys_circuits.odd?
       inverter_watt = (inverter_watt/@sys_circuits).ceil(3)
     end
-    mppt_amp = ((@panels_no*@panel_wt*1.2)/(@battery_voltage*2)).ceil()
+    inverter_watt = 1500 if inverter_watt < 1500
+    mppt_amp = ((@panels_no*@panel_wt*1.25)/(@battery_voltage*2)).ceil()
     mppt_amp = mppt_amp / @sys_circuits if @sys_circuits > 1
     
     puts "Panel = #{@sys_circuits}"
@@ -95,7 +98,7 @@ class Calculation < ApplicationRecord
       # systems = (System.all).find_by(user_id: user_id)
       calc = [];
       systems.each do |system|
-          calc << {"calculation" => system.calculation, "system" => system}
+          calc << {"calculation" => system.calculation, "system" => system, "cost" => system.estimatedCost(system)}
       end
       calc
     end

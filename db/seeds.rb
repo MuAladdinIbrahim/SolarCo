@@ -49,17 +49,18 @@ end
 
 10.times do
     System.create!(
-        consumption: Faker::Number.between(from: 50, to: 100),
+        consumption: Faker::Number.between(from: 50, to: 500),
         latitude: (Faker::Address.latitude).to_f.round(6),
         longitude: (Faker::Address.longitude).to_f.round(6),
         address: Faker::Address.full_address,
         city: Faker::Address.city,
+        backup: true,
         country: Faker::Address.country,
         user_id: (User.all.sample).id
     )
     Calculation.create!(
         system_circuits: Faker::Number.between(from: 1, to: 10),
-        panels_num: Faker::Number.between(from: 2, to: 60),
+        panels_num: Faker::Number.between(from: 5, to: 60),
         panel_watt: 250,
         battery_Ah: 200,
         batteries_num: Faker::Number.between(from: 2, to: 30),

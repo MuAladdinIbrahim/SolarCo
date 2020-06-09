@@ -3,10 +3,9 @@ class CalculationsController < ApiController
 
   # GET /calculations
   def index
-    @systems = (System.all).where(user_id: current_user.id)
-    @calculations = (Calculation.new).getCalculationsByUser(@systems)
+    @systems = System.where(user_id: current_user.id).order(created_at: :desc)
 
-    render json: @calculations
+    render json: @systems.as_json(include: [:calculation], methods: :cost)
   end
 
   # GET /calculations/1
@@ -14,9 +13,9 @@ class CalculationsController < ApiController
     if @calculation
       position = @calculation.position_Calculate(@calculation.system.latitude, @calculation.system.longitude)
       cables_protections = @calculation.cables_protections_Calculate(@calculation)
-      published = @calculation.system.published? (@calculation.system.id)
+      published = @calculation.system.published? (@calculation.system.id) || false
 
-      @calc = {"system" => @calculation.system, "calculation" => @calculation, "cables_protections" => cables_protections, "installations" => position, "published" => published}
+      @calc = {"system" => @calculation.system, "calculation" => @calculation, "cables_protections" => cables_protections, "installations" => position, "published" => published, "cost" => @calculation.system.cost}
 
       render json: @calc
     end

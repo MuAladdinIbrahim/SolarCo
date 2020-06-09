@@ -10,10 +10,8 @@ class PostsController < ApiController
         end
         if(@posts != nil)
           render json: @posts.as_json(include: [{system: {
-            include: { calculation: {
-              except: :calculation_id
-            } }
-          }} , :user])
+            include: { calculation: {except: :calculation_id} },
+            methods: :cost}}, :user])
         else 
           render json: {
             data:{
@@ -27,10 +25,8 @@ class PostsController < ApiController
         if(@posts != nil)
           # render json: @posts.as_json(include: [:system,:user])
           render json: @posts.as_json(include: [{system: {
-            include: { calculation: {
-              except: :calculation_id
-            } }
-          }} , :user])
+            include: { calculation: { except: :calculation_id} },
+            methods: :cost}} , :user])
           else 
             render json: {
               data:{

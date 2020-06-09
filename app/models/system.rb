@@ -6,6 +6,9 @@ class System < ApplicationRecord
     validates :user, :consumption, :latitude, :city, :country, presence: true
     validates :consumption, numericality: { greater_than: 0 }
 
+    PRICE_PER_WH = 3 #Cost per doller
+    EG_PER_DOLLER = 16.5 
+
     def published? (sys_id)
         true if Post.find_by(system_id: sys_id)
     end
@@ -16,12 +19,28 @@ class System < ApplicationRecord
         end
     end
 
-    def getCalculationsId(systems)
-        sys = [];
-        systems.each do |system|
-            sys << {"system" => system, "calculation_id" => system.calculation.id}
+    # def getCalculationsId(systems)
+    #     sys = [];
+    #     systems.each do |system|
+    #         sys << {"system" => system, "cost" => estimatedCost(system), "calculation_id" => system.calculation.id} if !system.nil?
+    #     end
+    #     sys
+    # end
+
+    def cost
+        wh_per_day = (self.consumption/30)*1000
+        if self.latitude.abs() < 70
+          gen_factor = ((90/self.latitude.abs()) * 1.78).ceil(2) if self.latitude.abs() > 25 || 6.5 #Generation Factor ~ sun rise hours
+        else
+            gen_factor = 2
         end
-        sys
+        tot_power = (wh_per_day*1.35 / gen_factor).ceil(-2)
+
+        if self.backup
+            (tot_power * PRICE_PER_WH * EG_PER_DOLLER * 0.28).ceil(2)
+        else
+            (tot_power * PRICE_PER_WH * EG_PER_DOLLER * 1.12).ceil(2)
+        end
     end
 
 end
