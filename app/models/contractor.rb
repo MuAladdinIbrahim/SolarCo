@@ -7,9 +7,9 @@ class Contractor < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
-  has_one :offer
-  has_many :offer_rates, through: :offer
-  has_many :offer_reviews, through: :offer
+  has_many :offers
+  has_many :offer_rates, through: :offers
+  has_many :offer_reviews, through: :offers
   has_one_attached :avatar
   has_many :messages, as: :messagable
   has_many :chatrooms, through: :messages, dependent: :destroy

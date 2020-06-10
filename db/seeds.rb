@@ -1,24 +1,4 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-# User.create(email: 'user@example.com', nickname: 'UOne', name: 'User One', password: "monkey67")AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
 require 'faker'
-
-# User.create!(email: 'user@example.com', nickname: 'UOne', name: 'User One', password: "monkey67")
-# User.create!(
-#     email: Faker::Internet.email, 
-#     name: Faker::Name.name, 
-#     password: "123456")
-# Contractor.create!(
-#     email: Faker::Internet.email, 
-#     name: Faker::Name.name, 
-#     password: "123456",
-#     address: Faker::Address.full_address,
-# )
 
 def createUserContractor(mail, name, password, username)
     User.create!(
@@ -43,11 +23,11 @@ createUserContractor("mohamed@mail.com", "mohamed", "123456", "mohamed");
 createUserContractor("nouran@mail.com", "nouran", "123456", "nouran");
 createUserContractor("zeyad@mail.com", "zeyad", "123456", "zeyad");
 
-2.times do 
+12.times do 
     createUserContractor(Faker::Internet.email, Faker::Name.name, "123456", Faker::Name.unique.name); 
 end 
 
-10.times do
+18.times do
     System.create!(
         consumption: Faker::Number.between(from: 50, to: 500),
         latitude: (Faker::Address.latitude).to_f.round(6),
@@ -76,30 +56,40 @@ end
     )
 end
 
-30.times do
-    Offer.create!(
-        proposal: Faker::Lorem.sentence(word_count: 20, supplemental: true),
-        price: Faker::Number.between(from: 1000, to: 10000),
-        contractor_id: (Contractor.all).sample.id,
-        post_id: (Post.all).sample.id,
-    )
-end
+10.times do |t|
+    4.times do |time|
+        Offer.create!(
+            proposal: Faker::Lorem.sentence(word_count: 20, supplemental: true),
+            price: Faker::Number.between(from: 20000, to: 100000),
+            post_id: (Post.first.id) + t,
+            contractor_id: (Contractor.first.id) + (t + time),
+        )
+    end
 
-40.times do
+    (Offer.last).post.update(closed: true)
+    (Offer.last).update(status: :accepted)
+
     OfferRate.create!(
-        rate: Faker::Number.between(from: 0, to: 5),
-        offer_id: (Offer.all).sample.id,
-        user_id: (User.all).sample.id,
+        rate: Faker::Number.between(from: 1, to: 5),
+        offer_id: (Offer.last).id,
+        user_id: (Offer.last).post.user_id,
     )
     OfferReview.create!(
         review: Faker::Hacker.say_something_smart,
-        offer_id: (Offer.all).sample.id,
-        user_id: (User.all).sample.id,
+        offer_id: (Offer.last).id,
+        user_id: (Offer.last).post.user_id,
     )
 end
- 
-admin = AdminUser.new
-admin.email = "admin@admin.com"
-admin.password = "admin123"
-admin.password_confirmation = "admin123"
-admin.save!
+
+8.times do |t|
+    4.times do |time|
+        Offer.create!(
+            proposal: Faker::Lorem.sentence(word_count: 20, supplemental: true),
+            price: Faker::Number.between(from: 20000, to: 100000),
+            post_id: (Post.last.id) - t,
+            contractor_id: (Contractor.last.id) - (t + time),
+        )
+    end
+end
+
+AdminUser.create!(email: "admin@admin.com", password: "admin123", password_confirmation: "admin123")

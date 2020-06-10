@@ -3,8 +3,7 @@ class OfferReviewsController < ApiController
 
   # GET /offer_reviews
   def index
-    # @offer_reviews = OfferReview.where(contractor_id: params[:id])
-    @offer_reviews = (Contractor.find(params[:id])).offer_reviews
+    @offer_reviews = (OfferReview.new).getReviews(Contractor.find(params[:id]).offers)
 
     render json: @offer_reviews
   end

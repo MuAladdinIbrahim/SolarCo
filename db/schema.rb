@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 2020_06_06_094657) do
   end
 
   create_table "offer_rates", force: :cascade do |t|
-    t.decimal "rate"
+    t.integer "rate"
     t.bigint "user_id", null: false
     t.bigint "offer_id", null: false
     t.datetime "created_at", precision: 6, null: false
