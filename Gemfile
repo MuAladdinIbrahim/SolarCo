@@ -54,9 +54,11 @@ gem 'rails_admin', '~> 2.0.2'
 gem 'devise', '> 4.x'
 gem 'activeadmin'
 
-# #faker 
+# faker 
 gem 'faker'
 
+# notification
+gem 'public_activity'
 # #pdf 
 gem 'wicked_pdf'
 
