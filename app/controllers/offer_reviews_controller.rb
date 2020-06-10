@@ -3,8 +3,7 @@ class OfferReviewsController < ApiController
 
   # GET /offer_reviews
   def index
-    # @offer_reviews = OfferReview.where(contractor_id: params[:id])
-    @offer_reviews = (Contractor.find(params[:id])).offer_reviews
+    @offer_reviews = (OfferReview.new).getReviews(Contractor.find(params[:id]).offers)
 
     render json: @offer_reviews
   end
@@ -17,6 +16,7 @@ class OfferReviewsController < ApiController
   # POST /offer_reviews
   def create
     @offer_review = OfferReview.new(offer_review_params)
+    @offer_review.user = current_user
 
     if @offer_review.save
       render json: @offer_review, status: :created, location: @offer_review
@@ -42,11 +42,11 @@ class OfferReviewsController < ApiController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_offer_review
-      @offer_review = OfferReview.find(params[:id])
+      @offer_review = OfferReview.find_by(offer_id: params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def offer_review_params
-      params.require(:offer_review).permit(:review, :contractor_id, :offer_id)
+      params.require(:offer_review).permit(:review, :user_id, :offer_id)
     end
 end

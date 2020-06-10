@@ -7,9 +7,6 @@ Rails.application.routes.draw do
   # mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root to: 'admin/dashboard#index'
 
-  resources :offer_rates
-  resources :offer_reviews
-  resources :offers
   resources :posts
   resources :users
   resources :offers
@@ -31,13 +28,15 @@ Rails.application.routes.draw do
 
   ######### Chat Routes #########
   get 'messages/:user_id/:contractor_id', to: 'messages#index'
+  get 'chatrooms/clients/:id', to: 'chatrooms#clientChats'
+  get 'chatrooms/contractors/:id', to: 'chatrooms#contractorChats'
   ###################################################
 
   ######### ReviewsRoutes #########
   get 'offer_rates/per_contractor/:id', to: 'offer_rates#index'
   get 'offer_reviews/per_contractor/:id', to: 'offer_reviews#index'
-  resources :offer_rates, only: []
-  resources :offer_reviews, only: []
+  resources :offer_rates, only: [:create, :show, :update]
+  resources :offer_reviews, only: [:create, :show, :update]
   ###################################################
 
   ######## Clients Routes #########

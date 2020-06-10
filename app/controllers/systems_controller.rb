@@ -3,10 +3,9 @@ class SystemsController < ApiController
 
   # GET /systems
   def index
-    @system = System.new()
-    @systems = @system.getCalculationsId(System.where(user_id: current_user.id).order(created_at: :desc)) 
+    @systems = System.where(user_id: current_user.id).order(created_at: :desc) 
 
-    render json: @systems
+    render json: @systems.as_json(include: [calculation: {only: :id}], methods: :cost)
   end
 
   # GET /systems/1
@@ -20,7 +19,7 @@ class SystemsController < ApiController
     @system.user = current_user
 
     if @system.save
-      @calculation = createCalculation(@system)
+      @calculation = createCalculation()
       render json: @calculation, status: :created
     else
       render json: @system.errors, status: :unprocessable_entity
@@ -53,17 +52,17 @@ class SystemsController < ApiController
 
     # Only allow a trusted parameter "white list" through.
     def system_params
-      params.require(:system).permit(:id, :latitude, :longitude, :city, :country, :consumption)
+      params.require(:system).permit(:id, :latitude, :address, :longitude, :city, :country, :consumption, :backup)
     end
 
-    def createCalculation(system)
+    def createCalculation
       @calculation = Calculation.new()
 
-      panel = @calculation.panel_Calculate(system.consumption, system.latitude)
-      battery = @calculation.battery_Calculate(panel['wh_per_day'], system.latitude)
+      panel = @calculation.panel_Calculate(@system)
+      battery = @calculation.battery_Calculate(panel['wh_per_day'], @system.latitude)
       componets = @calculation.inverter_mppt_Calculate()
   
-      @calculation = Calculation.create(system_id: system.id, system_circuits: componets['inverters_num'], panels_num: panel['panels_no'], panel_watt: panel['panel_watt'], battery_Ah: battery['battery_amp'], batteries_num: battery['batteries_num'], inverter_watt: componets['inverter_watt'], mppt_amp: componets['mppt_amp'])
+      @calculation = Calculation.create(system_id: @system.id, system_circuits: componets['inverters_num'], panels_num: panel['panels_no'], panel_watt: panel['panel_watt'], battery_Ah: battery['battery_amp'], batteries_num: battery['batteries_num'], inverter_watt: componets['inverter_watt'], mppt_amp: componets['mppt_amp'])
     end
 
 end

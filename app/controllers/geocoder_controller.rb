@@ -3,8 +3,6 @@ class GeocoderController < ApiController
   def getLocation    
     if geocoder_params[:lat] && geocoder_params[:long] && res_loc = (Geocoder.search([geocoder_params[:lat].round(6), geocoder_params[:long].round(6)])[0].data).to_hash['address']
 
-      puts (Geocoder.search([geocoder_params[:lat].round(6), geocoder_params[:long].round(6)])[0].data).to_yaml
-
       render json: jsonFormat(geocoder_params[:lat].round(6), geocoder_params[:long].round(6), res_loc['city'], res_loc['country'])
     else
       getbyIP

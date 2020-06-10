@@ -41,15 +41,15 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-#authentication api
+# #authentication api
 gem 'devise_token_auth'
 gem 'omniauth'
 gem 'rack-cors', :require => 'rack/cors'
 
-#geocoder
+# #geocoder
 gem 'geocoder'
 
-# admin
+# #admin
 gem 'rails_admin', '~> 2.0.2'
 gem 'devise', '> 4.x'
 gem 'activeadmin'
@@ -57,6 +57,12 @@ gem 'activeadmin'
 # faker 
 gem 'faker'
 
+<<<<<<< HEAD
 # notification
 gem 'public_activity'
+=======
+# #pdf 
+gem 'wicked_pdf'
+
+>>>>>>> 119f65583f82c91143f8b996af8353be533d788d
 
