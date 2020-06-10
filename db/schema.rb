@@ -152,7 +152,7 @@ ActiveRecord::Schema.define(version: 2020_06_08_154415) do
   end
 
   create_table "offer_rates", force: :cascade do |t|
-    t.integer "rate"
+    t.decimal "rate"
     t.bigint "user_id", null: false
     t.bigint "offer_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -200,7 +200,6 @@ ActiveRecord::Schema.define(version: 2020_06_08_154415) do
     t.decimal "latitude", precision: 9, scale: 6, default: "0.0"
     t.decimal "longitude", precision: 9, scale: 6, default: "0.0"
     t.integer "consumption", default: 0
-    t.boolean "backup", default: false
     t.string "address"
     t.string "city", null: false
     t.string "country", null: false

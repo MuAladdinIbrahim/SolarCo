@@ -57,12 +57,9 @@ gem 'activeadmin'
 # faker 
 gem 'faker'
 
-<<<<<<< HEAD
 # notification
 gem 'public_activity'
-=======
 # #pdf 
 gem 'wicked_pdf'
 
->>>>>>> 119f65583f82c91143f8b996af8353be533d788d
 
