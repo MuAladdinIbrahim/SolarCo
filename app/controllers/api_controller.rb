@@ -12,7 +12,7 @@ class ApiController < ActionController::API
 	#   end
 	include PublicActivity::StoreController
     include DeviseTokenAuth::Concerns::SetUserByToken
-
+	
 	before_action :configure_permitted_parameters, if: :devise_controller?
 
 	protected

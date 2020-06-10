@@ -1,6 +1,7 @@
 class Post < ApplicationRecord
   include PublicActivity::Model
   tracked owner: ->(controller, model) { controller && controller.current_user }
+  tracked recipient: ->(controller, model) { model && model.user }
   belongs_to :user
   validates :user, presence: true
   belongs_to :system

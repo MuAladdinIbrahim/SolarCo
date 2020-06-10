@@ -58,7 +58,5 @@ Rails.application.routes.draw do
   get 'offers/post/:post_id', to: 'offers#getOffers'
   ###################################################
   get 'notifications', to: 'notification#index'
-  get 'notifications/:id', to: 'notification#show'
-
 end
 
