@@ -43,10 +43,8 @@ class PostsController < ApiController
     # render json: @post.as_json(include: [:system,:user])
     if current_contractor || can?(:read, @post)
       render json: @post.as_json(include: [{system: {
-        include: { calculation: {
-          except: :calculation_id
-        } }
-      }} , :user, :offers])
+        include: { calculation: {except: :calculation_id} },
+        methods: :cost}}, :user, :offers])
     else
       render json: {:error => "You are not authorized to view this post"}, status: :unauthorized
     end

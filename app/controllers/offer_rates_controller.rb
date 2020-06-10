@@ -18,6 +18,7 @@ class OfferRatesController < ApiController
   # POST /offer_rates
   def create
     @offer_rate = OfferRate.new(offer_rate_params)
+    @offer_rate.user = current_user
 
     if @offer_rate.save
       render json: @offer_rate, status: :created, location: @offer_rate
@@ -43,11 +44,11 @@ class OfferRatesController < ApiController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_offer_rate
-      @offer_rate = OfferRate.find(params[:id])
+      @offer_rate = OfferRate.find_by(offer_id: params[:id], user_id: current_user.id)
     end
 
     # Only allow a trusted parameter "white list" through.
     def offer_rate_params
-      params.require(:offer_rate).permit(:rate, :contractor_id, :offer_id)
+      params.require(:offer_rate).permit(:rate, :user_id, :offer_id)
     end
 end
