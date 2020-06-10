@@ -42,7 +42,7 @@ class OfferReviewsController < ApiController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_offer_review
-      @offer_review = OfferReview.find_by(offer_id: params[:id], user_id: current_user.id)
+      @offer_review = OfferReview.find_by(offer_id: params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

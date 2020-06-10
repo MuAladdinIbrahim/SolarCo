@@ -35,7 +35,6 @@ class PostsController < ApiController
             }
           end
       end
-
   end
 
   # GET /posts/1

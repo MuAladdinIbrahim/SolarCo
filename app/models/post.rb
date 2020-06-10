@@ -6,7 +6,6 @@ class Post < ApplicationRecord
     validates :system, presence: true
     validates :title, length: { in: 6..35 }
     validates :description, length: { minimum: 100 }
-    has_many :offer
 
     def validate_create_offer(current_contractor, post)
         if post.contractor = current_contractor
@@ -15,4 +14,16 @@ class Post < ApplicationRecord
           true
         end
     end
+
+    # def Reviews
+    #   # off_id = nil
+    #   (self.offers).each do |offer|
+    #     if offer.status = 'accepted'
+    #       puts offer.id
+    #       rate = OfferRate.find_by(offer_id: offer.id) 
+    #       review = OfferReview.find_by(offer_id: offer.id) 
+    #       return {"rate" => rate, "comment" => review}
+    #     end
+    #   end
+    # end
 end
