@@ -61,5 +61,3 @@ gem 'faker'
 gem 'public_activity'
 # #pdf 
 gem 'wicked_pdf'
-
-
