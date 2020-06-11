@@ -8,7 +8,7 @@ class Post < ApplicationRecord
   has_many :offers
   validates :system, presence: true
   validates :title, length: { in: 6..35 }
-  validates :description, length: { minimum: 50 }
+  validates :description, length: {in: 0..250 }
 
   def validate_create_offer(current_contractor, post)
       if post.contractor = current_contractor

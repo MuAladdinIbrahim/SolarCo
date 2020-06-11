@@ -27,7 +27,7 @@ class OffersController < ApiController
     # if can?(:create, Offer.new)
       @offer = Offer.new(offer_params)
       post = Post.find(offer_params['post_id'])
-      if contractor_has_mulitble_offers_validation(post.offer) && !after_closing_post_validation(post) #validate if the contractor has offer in the same post & after cloing post validation
+      if contractor_has_mulitble_offers_validation(post.offers) && !after_closing_post_validation(post) #validate if the contractor has offer in the same post & after cloing post validation
         @offer.contractor = Contractor.find(current_contractor.id)
         @offer.post = post
         if @offer.save

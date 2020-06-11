@@ -8,32 +8,19 @@ class PostsController < ApiController
         if(approved_params['closed'] == 'closed')
            @posts = Post.where(user_id: current_user.id, closed: true)
         end
-        if(@posts != nil)
-          render json: @posts.as_json(include: [{system: {
-            include: { calculation: {except: :calculation_id} },
-            methods: :cost}}, :user])
-        else 
-          render json: {
-            data:{
-              message:"no posts"
-            }
-          }
-        end
-      end
-      if(current_contractor)
+      elsif(current_contractor)
         @posts = Post.where(closed: false).order(created_at: :desc)
-        if(@posts != nil)
-          # render json: @posts.as_json(include: [:system,:user])
-          render json: @posts.as_json(include: [{system: {
-            include: { calculation: { except: :calculation_id} },
-            methods: :cost}} , :user])
-          else 
-            render json: {
-              data:{
-                message:"no posts"
-              }
-            }
-          end
+      end
+      if(@posts != nil)
+        render json: @posts.as_json(include: [{system: {
+          include: { calculation: {except: :calculation_id} },
+          methods: :cost}}, :user])
+      else 
+        render json: {
+          data:{
+            message:"no posts"
+          }
+        }
       end
   end
 
