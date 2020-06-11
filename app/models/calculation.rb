@@ -14,7 +14,7 @@ class Calculation < ApplicationRecord
     end
 
     tot_power = (wh_per_day*1.35 / gen_factor).ceil(-2)
-    @panels_no = ( tot_power / 250).ceil()
+    @panels_no = ( tot_power / @panel_wt).ceil()
     @panels_no += 1 if @panels_no.odd? || @panels_no == 0
 
     {"panel_watt" => @panel_wt, "wh_per_day" => wh_per_day, "gen_factor" => gen_factor, "tot_power" => tot_power, "panels_no" => @panels_no}
