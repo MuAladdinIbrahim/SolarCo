@@ -1,12 +1,12 @@
 development:
   adapter: redis
   url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-  channel_prefix: solar_chat_api_development
+  channel_prefix: solar_api_development
 
 test:
   adapter: test
 
 production:
   adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-  channel_prefix: solar_chat_api_production
+  url: redis://redistogo:39d28e5b8323b001a040e01bfbd82b89@pike.redistogo.com:10948/
+  channel_prefix: solar_api_production
