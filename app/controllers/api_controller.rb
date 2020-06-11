@@ -12,12 +12,12 @@ class ApiController < ActionController::API
 	#   end
 	include PublicActivity::StoreController
     include DeviseTokenAuth::Concerns::SetUserByToken
-    before_action :configure_permitted_parameters, if: :devise_controller?
+    # before_action :configure_permitted_parameters, if: :devise_controller?
   
-    protected
+    # protected
   
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :email, :type, :has_office, :address, :mobileNumber, :fax, :website])
-      devise_parameter_sanitizer.permit(:account_update, keys: [:name, :email, :type, :has_office, :address, :mobileNumber, :fax, :website])
-    end
+    # def configure_permitted_parameters
+    #   devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :email, :type, :has_office, :address, :mobileNumber, :fax, :website])
+    #   devise_parameter_sanitizer.permit(:account_update, keys: [:name, :email, :type, :has_office, :address, :mobileNumber, :fax, :website])
+    # end
   end
