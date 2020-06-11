@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_11_013027) do
+ActiveRecord::Schema.define(version: 2020_06_11_012604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,12 @@ ActiveRecord::Schema.define(version: 2020_06_11_013027) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["system_id"], name: "index_calculations_on_system_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "category"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "chatrooms", force: :cascade do |t|
@@ -230,26 +236,15 @@ ActiveRecord::Schema.define(version: 2020_06_11_013027) do
     t.index ["user_id"], name: "index_systems_on_user_id"
   end
 
-  create_table "tags", force: :cascade do |t|
-    t.string "tag"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "tutorials", force: :cascade do |t|
     t.string "title"
     t.text "body"
     t.bigint "contractor_id", null: false
+    t.bigint "category_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_tutorials_on_category_id"
     t.index ["contractor_id"], name: "index_tutorials_on_contractor_id"
-  end
-
-  create_table "tutorials_tags", force: :cascade do |t|
-    t.bigint "tutorial_id", null: false
-    t.bigint "tag_id", null: false
-    t.index ["tag_id"], name: "index_tutorials_tags_on_tag_id"
-    t.index ["tutorial_id"], name: "index_tutorials_tags_on_tutorial_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -301,7 +296,6 @@ ActiveRecord::Schema.define(version: 2020_06_11_013027) do
   add_foreign_key "posts", "systems"
   add_foreign_key "posts", "users"
   add_foreign_key "systems", "users"
+  add_foreign_key "tutorials", "categories"
   add_foreign_key "tutorials", "contractors"
-  add_foreign_key "tutorials_tags", "tags"
-  add_foreign_key "tutorials_tags", "tutorials"
 end
