@@ -4,7 +4,7 @@ class PostsController < ApiController
   # GET /posts
   def index
       if(current_user)
-        @posts = Post.where(user_id: current_user.id, closed: false)
+        @posts = Post.where(user_id: current_user.id, closed: false).order(created_at: :desc)
         if(approved_params['closed'] == 'closed')
            @posts = Post.where(user_id: current_user.id, closed: true)
         end
@@ -21,7 +21,7 @@ class PostsController < ApiController
         end
       end
       if(current_contractor)
-        @posts = Post.where(closed: false)
+        @posts = Post.where(closed: false).order(created_at: :desc)
         if(@posts != nil)
           # render json: @posts.as_json(include: [:system,:user])
           render json: @posts.as_json(include: [{system: {
