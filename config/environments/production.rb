@@ -105,4 +105,9 @@ Rails.application.configure do
   config.web_socket_server_url = "wss://solarco.herokuapp.com/cable" 
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
   config.api_url = 'https://solarco.herokuapp.com'
+
+  config.action_dispatch.rack_cache = {
+    metastore:   'redis://localhost:6379/1/metastore',
+    entitystore: 'redis://localhost:6379/1/entitystore'
+  }
 end

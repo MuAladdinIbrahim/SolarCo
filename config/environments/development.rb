@@ -67,8 +67,9 @@ Rails.application.configure do
   port:          '587',
   authentication: :plain,
   enable_starttls_auto: true
+  }
 
-}
+
 # Default Mailer Host
 Rails.application.routes.default_url_options[:host] = 'http://localhost:3000'
 end

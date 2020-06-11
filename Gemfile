@@ -62,4 +62,4 @@ gem 'public_activity'
 # #pdf 
 gem 'wicked_pdf'
 
-
+gem 'redis-rails'
