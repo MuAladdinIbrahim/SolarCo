@@ -28,7 +28,7 @@ class System < ApplicationRecord
     # end
 
     def cost
-        wh_per_day = (self.consumption/30)*1000
+        wh_per_day = self.consumption/30.to_f*1000
         if self.latitude.abs() < 70
           gen_factor = ((90/self.latitude.abs()) * 1.78).ceil(2) if self.latitude.abs() > 25 || 6.5 #Generation Factor ~ sun rise hours
         else
@@ -39,7 +39,7 @@ class System < ApplicationRecord
         if self.backup
             (tot_power * PRICE_PER_WH * EG_PER_DOLLER * 0.28).ceil(2)
         else
-            (tot_power * PRICE_PER_WH * EG_PER_DOLLER * 1.12).ceil(2)
+            (tot_power * PRICE_PER_WH * EG_PER_DOLLER * 1.1).ceil(2)
         end
     end
 

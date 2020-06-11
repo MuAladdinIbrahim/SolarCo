@@ -5,16 +5,16 @@ class Calculation < ApplicationRecord
   
   #### Panel #####
   def panel_Calculate(system)
-    puts system.latitude.inspect
-    @panel_wt = 250 ## to set voltage of PV_panel
-    wh_per_day = (system.consumption/30)*1000
+    wh_per_day = system.consumption/30.to_f*1000
     wh_per_day *= 0.2 if system.backup
+    @panel_wt = 250 if wh_per_day >= 2000
+    @panel_wt = 150 if wh_per_day < 2000
     if system.latitude.abs() < 70
       gen_factor = ((90/system.latitude.abs()) * 1.78).ceil(2) if system.latitude.abs() > 25 || 6.5 #Generation Factor ~ sun rise hours 
     end
 
     tot_power = (wh_per_day*1.35 / gen_factor).ceil(-2)
-    @panels_no = ( tot_power / 250).ceil()
+    @panels_no = ( tot_power / @panel_wt).ceil()
     @panels_no += 1 if @panels_no.odd? || @panels_no == 0
 
     {"panel_watt" => @panel_wt, "wh_per_day" => wh_per_day, "gen_factor" => gen_factor, "tot_power" => tot_power, "panels_no" => @panels_no}
@@ -24,7 +24,8 @@ class Calculation < ApplicationRecord
   def battery_Calculate(wh_per_day, lat)
     @battery_dod = 0.5      #Depth of Discharge
     @battery_voltage = 12   #Battery Voltage
-    @battery_amp = 200
+    @battery_amp = 200 if wh_per_day >= 2000
+    @battery_amp = 100 if wh_per_day < 2000
     if lat.abs() < 70
       cloudy_days = ((lat.abs()/90)*5.5).ceil(2) if lat.abs() > 30 || 1.2 #Cloudy days without charging ~ climate
     end 
@@ -46,11 +47,10 @@ class Calculation < ApplicationRecord
       @sys_circuits += 1 if @sys_circuits.odd?
       inverter_watt = (inverter_watt/@sys_circuits).ceil(3)
     end
-    inverter_watt = 1500 if inverter_watt < 1500
+    inverter_watt = 1000 if inverter_watt < 1000
     mppt_amp = ((@panels_no*@panel_wt*1.25)/(@battery_voltage*2)).ceil()
     mppt_amp = mppt_amp / @sys_circuits if @sys_circuits > 1
     
-    puts "Panel = #{@sys_circuits}"
     {"inverter_watt" => inverter_watt.ceil(-2), "inverters_num" => @sys_circuits, "mppt_amp" => mppt_amp.ceil(-1), "mppts_num" => @sys_circuits}
   end
 
@@ -66,8 +66,6 @@ class Calculation < ApplicationRecord
 
     # ##### Cables and Protections #####
     def cables_protections_Calculate(calc_obj)
-      puts calc_obj.inspect
-      puts calc_obj.system_circuits
       section1 = section1(calc_obj.mppt_amp)
       section2 = section2(calc_obj.batteries_num/calc_obj.system_circuits, calc_obj.battery_Ah)
       section3 = section3(calc_obj.inverter_watt)
@@ -81,7 +79,6 @@ class Calculation < ApplicationRecord
     end
 
     def section2(batteries_num_per_circuit, battery_Ah)   #cable and Fuse
-        puts battery_Ah
         fuse_rate = ((batteries_num_per_circuit/2)*battery_Ah).ceil()
         cable_rate = (1.2*fuse_rate).ceil()
         {"battery_max_rate" => (battery_Ah+10), "cable_current2" => "#{cable_rate}, solid", "fuse_current2" => fuse_rate}

@@ -39,6 +39,13 @@ Rails.application.routes.draw do
   resources :offer_reviews, only: [:create, :show, :update]
   ###################################################
 
+  ######### TutorailsRoutes #########
+  resources :tutorials
+  resources :tags
+  resources :comments
+  resources :likes
+  ###################################################
+
   ######## Clients Routes #########
   put 'clients/avatar/:id', to: 'clients#updateAvatar'
   resources :clients, only: [:show, :update]

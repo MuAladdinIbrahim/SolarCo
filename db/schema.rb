@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_08_154415) do
+ActiveRecord::Schema.define(version: 2020_06_11_013027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,16 @@ ActiveRecord::Schema.define(version: 2020_06_08_154415) do
     t.index ["user_id"], name: "index_chatrooms_on_user_id"
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.bigint "tutorial_id", null: false
+    t.bigint "user_id", null: false
+    t.text "comment"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tutorial_id"], name: "index_comments_on_tutorial_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
   create_table "contractors", force: :cascade do |t|
     t.string "address"
     t.string "mobileNumber"
@@ -138,6 +148,16 @@ ActiveRecord::Schema.define(version: 2020_06_08_154415) do
     t.index ["email"], name: "index_contractors_on_email", unique: true
     t.index ["reset_password_token"], name: "index_contractors_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_contractors_on_uid_and_provider", unique: true
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.bigint "tutorial_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "islike"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tutorial_id"], name: "index_likes_on_tutorial_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -210,6 +230,28 @@ ActiveRecord::Schema.define(version: 2020_06_08_154415) do
     t.index ["user_id"], name: "index_systems_on_user_id"
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.string "tag"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tutorials", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.bigint "contractor_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["contractor_id"], name: "index_tutorials_on_contractor_id"
+  end
+
+  create_table "tutorials_tags", force: :cascade do |t|
+    t.bigint "tutorial_id", null: false
+    t.bigint "tag_id", null: false
+    t.index ["tag_id"], name: "index_tutorials_tags_on_tag_id"
+    t.index ["tutorial_id"], name: "index_tutorials_tags_on_tutorial_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -245,6 +287,10 @@ ActiveRecord::Schema.define(version: 2020_06_08_154415) do
   add_foreign_key "calculations", "systems"
   add_foreign_key "chatrooms", "contractors"
   add_foreign_key "chatrooms", "users"
+  add_foreign_key "comments", "tutorials"
+  add_foreign_key "comments", "users"
+  add_foreign_key "likes", "tutorials"
+  add_foreign_key "likes", "users"
   add_foreign_key "messages", "chatrooms"
   add_foreign_key "offer_rates", "offers"
   add_foreign_key "offer_rates", "users"
@@ -255,4 +301,7 @@ ActiveRecord::Schema.define(version: 2020_06_08_154415) do
   add_foreign_key "posts", "systems"
   add_foreign_key "posts", "users"
   add_foreign_key "systems", "users"
+  add_foreign_key "tutorials", "contractors"
+  add_foreign_key "tutorials_tags", "tags"
+  add_foreign_key "tutorials_tags", "tutorials"
 end
