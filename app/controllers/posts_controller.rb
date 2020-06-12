@@ -1,5 +1,7 @@
 class PostsController < ApiController
   before_action :set_post, only: [:show, :update, :destroy]
+  self.page_cache_directory = :domain_cache_directory
+  caches_page :index 
 
   # GET /posts
   def index
@@ -98,5 +100,9 @@ class PostsController < ApiController
 
     def approved_params
       params.permit(:closed)
+    end
+
+    def domain_cache_directory
+      Rails.root.join("public", request.domain)
     end
 end

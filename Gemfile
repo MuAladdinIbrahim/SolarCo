@@ -61,3 +61,6 @@ gem 'faker'
 gem 'public_activity'
 # #pdf 
 gem 'wicked_pdf'
+
+# caching
+gem "actionpack-page_caching"
