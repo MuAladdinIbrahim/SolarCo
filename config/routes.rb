@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   # mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root to: 'admin/dashboard#index'
-
+  
+  resources :contacts
   resources :posts
   resources :users
   resources :offers
@@ -64,5 +65,9 @@ Rails.application.routes.draw do
   get 'offers/post/:post_id', to: 'offers#getOffers'
   ###################################################
   get 'notifications', to: 'notification#index'
+
+  ######## contact us create route#########
+  post 'contacts', to: 'contacts#create'
+  ###################################################
 end
 
