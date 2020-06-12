@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 2020_06_11_012604) do
   create_table "comments", force: :cascade do |t|
     t.bigint "tutorial_id", null: false
     t.bigint "user_id", null: false
-    t.text "comment"
+    t.text "review"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["tutorial_id"], name: "index_comments_on_tutorial_id"

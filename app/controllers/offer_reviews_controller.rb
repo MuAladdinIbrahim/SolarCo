@@ -5,12 +5,12 @@ class OfferReviewsController < ApiController
   def index
     @offer_reviews = (OfferReview.new).getReviews(Contractor.find(params[:id]).offers)
 
-    render json: @offer_reviews
+    render json: @offer_reviews.as_json(methods: :user)
   end
 
   # GET /offer_reviews/1
   def show
-    render json: @offer_review
+    render json: @offer_review.as_json(methods: :user)
   end
 
   # POST /offer_reviews

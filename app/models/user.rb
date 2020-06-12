@@ -5,6 +5,8 @@ class User < ApplicationRecord
     # has_many :calculations, through: :systems
     has_many :messages, as: :messagable
     has_many :chatrooms, through: :messages, dependent: :destroy
+    has_one :like
+    has_many :comments
 
     extend Devise::Models
     devise :database_authenticatable, 

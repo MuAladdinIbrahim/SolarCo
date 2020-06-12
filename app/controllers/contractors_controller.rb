@@ -34,7 +34,7 @@ class ContractorsController < ApiController
   # GET /contractors/1
   def show
     # Call the method avatar_url to send its return value with the response
-    render :json => @contractor.as_json(methods: :avatar_url)
+    render :json => @contractor.as_json(include: :offers, methods: [:avatar_url, :tutCount])
   end
 
 

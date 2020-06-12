@@ -41,9 +41,11 @@ Rails.application.routes.draw do
 
   ######### TutorailsRoutes #########
   resources :tutorials
-  get 'tutorials/category/:id', to: 'tutorials#indexCategory'
+  get 'tutorials/categories/:id', to: 'tutorials#indexCategory'
+  get 'tutorials/contractors/:id', to: 'tutorials#indexContractor'
   resources :categories
   resources :comments
+  get 'comments/tutorial/:id', to: 'comments#indexTutorial'
   resources :likes
   ###################################################
 

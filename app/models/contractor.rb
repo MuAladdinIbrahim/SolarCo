@@ -13,6 +13,7 @@ class Contractor < ActiveRecord::Base
   has_one_attached :avatar
   has_many :messages, as: :messagable
   has_many :chatrooms, through: :messages, dependent: :destroy
+  has_many :tutorials
 
   # Returns the url path for the avatar blob
   def avatar_url
@@ -25,5 +26,13 @@ class Contractor < ActiveRecord::Base
         rules: Ability.new(self).as_json,
         avatar: self.avatar_url
     })
+  end
+
+  def tutCount
+    Tutorial.where(contractor_id: self.id).count
+  end
+
+  def likes
+
   end
 end

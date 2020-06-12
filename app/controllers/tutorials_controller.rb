@@ -14,6 +14,13 @@ class TutorialsController < ApiController
   
       render json: @tutorials.as_json(methods: [:contractor, :category])
     end
+
+    # GET /tutorialsByContractor
+    def indexContractor
+      @tutorials = Tutorial.where(contractor_id: params[:id]).order(created_at: :desc)
+  
+      render json: @tutorials.as_json(methods: [:contractor, :category])
+    end
   
     # GET /tutorials/1
     def show
