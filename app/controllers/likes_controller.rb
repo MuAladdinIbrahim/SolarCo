@@ -1,4 +1,4 @@
-class LikesController < ApplicationController
+class LikesController < ApiController
     before_action :set_like, only: [:show, :update, :destroy]
 
     # GET /likes

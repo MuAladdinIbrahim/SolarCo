@@ -10,7 +10,7 @@ class NotificationController < ApiController
       @offers_posts = Post.where(id: @contractor_offers)
       @notifications = PublicActivity::Activity.order("created_at DESC").where(owner_type: "User", trackable_type: "Post", trackable_id: @offers_posts.ids).all
     end
-    render json: @notifications.as_json(include: :trackable)
+    render json: @notifications.as_json(include: [:trackable,:owner])
   end
 
   def show
