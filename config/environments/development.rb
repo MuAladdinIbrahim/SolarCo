@@ -26,6 +26,10 @@ Rails.application.configure do
 
     config.cache_store = :null_store
   end
+  #redis for dev
+  config.cache_store = :redis_cache_store
+  config.action_controller.perform_caching = true
+
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
