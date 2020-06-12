@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :resources
   get 'notification/index'
   mount ActionCable.server => '/cable'
   

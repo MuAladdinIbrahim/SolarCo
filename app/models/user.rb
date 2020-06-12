@@ -1,5 +1,6 @@
 class User < ApplicationRecord
     has_many :systems, dependent: :destroy
+    has_many :posts, dependent: :destroy
     has_many :offer_rates
     has_many :offer_reviews
     # has_many :calculations, through: :systems
