@@ -52,7 +52,7 @@ end
         user_id: (System.last).user_id,
         system_id: (System.last).id,
         title: Faker::FunnyName.two_word_name,
-        description: Faker::Lorem.paragraph_by_chars(number: 256, supplemental: false),
+        description: Faker::Lorem.paragraph_by_chars(number: 200, supplemental: false),
     )
 end
 
@@ -93,3 +93,19 @@ end
 end
 
 AdminUser.create!(email: "admin@admin.com", password: "admin123", password_confirmation: "admin123")
+
+Category.create!(category: "PV panel")
+Category.create!(category: "Battery")
+Category.create!(category: "Inverter")
+Category.create!(category: "Charger Controller")
+Category.create!(category: "Installations")
+Category.create!(category: "Maintenance")
+
+10.times do 
+    Tutorial.create!(
+        title: Faker::FunnyName.two_word_name,
+        body: Faker::Lorem.sentence(word_count: 30, supplemental: true),
+        contractor_id: Contractor.all.sample.id,
+        category_id: Category.all.sample.id,
+    )
+end
