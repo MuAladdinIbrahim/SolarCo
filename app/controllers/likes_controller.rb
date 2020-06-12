@@ -3,22 +3,30 @@ class LikesController < ApiController
 
     # GET /likes
     def index
-      @likes = Like.all
+      @likes = Like.all.order(created_at: :desc)
   
-      render json: @likes
+      render json: @likes.as_json(methods: :user)
     end
   
+    # GET /likes
+    def indexTutorial
+      @likes = Like.where(tutorial_id: params[:id]).order(created_at: :desc)
+  
+      render json: @likes.as_json(methods: :user)
+    end
+
     # GET /likes/1
     def show
-      render json: @like
+      render json: @like.as_json(methods: :user)
     end
   
     # POST /likes
     def create
       @like = Like.new(like_params)
+      @like.user = current_user
   
       if @like.save
-        render json: @like, status: :created, location: @like
+        render json: @like.as_json(methods: :user), status: :created, location: @like
       else
         render json: @like.errors, status: :unprocessable_entity
       end
@@ -27,7 +35,7 @@ class LikesController < ApiController
     # PATCH/PUT /likes/1
     def update
       if @like.update(like_params)
-        render json: @like
+        render json: @like.as_json(methods: :user)
       else
         render json: @like.errors, status: :unprocessable_entity
       end
@@ -46,6 +54,6 @@ class LikesController < ApiController
   
       # Only allow a trusted parameter "white list" through.
       def like_params
-        params.fetch(:like, {})
+        params.require(:like).permit(:id, :islike, :tutorial_id)
       end
 end
