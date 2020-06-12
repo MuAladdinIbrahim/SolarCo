@@ -13,7 +13,7 @@ class ClientsController < ApiController
     # GET /clients/1
     def show
         # Call the method avatar_url to send its return value with the response
-        render :json => @client.as_json(methods: :avatar_url)
+        render :json => @client.as_json(methods: :avatar_url, include: :posts)
     end
 
     def update
