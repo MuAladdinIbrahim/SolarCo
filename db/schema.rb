@@ -165,6 +165,15 @@ ActiveRecord::Schema.define(version: 2020_06_11_103547) do
     t.index ["uid", "provider"], name: "index_contractors_on_uid_and_provider", unique: true
   end
 
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "tutorial_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tutorial_id"], name: "index_favorites_on_tutorial_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
+
   create_table "likes", force: :cascade do |t|
     t.bigint "tutorial_id", null: false
     t.bigint "user_id", null: false
@@ -293,6 +302,8 @@ ActiveRecord::Schema.define(version: 2020_06_11_103547) do
   add_foreign_key "chatrooms", "users"
   add_foreign_key "comments", "tutorials"
   add_foreign_key "comments", "users"
+  add_foreign_key "favorites", "tutorials"
+  add_foreign_key "favorites", "users"
   add_foreign_key "likes", "tutorials"
   add_foreign_key "likes", "users"
   add_foreign_key "messages", "chatrooms"

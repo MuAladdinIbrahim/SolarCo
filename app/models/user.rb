@@ -8,6 +8,8 @@ class User < ApplicationRecord
     has_many :chatrooms, through: :messages, dependent: :destroy
     has_one :like
     has_many :comments
+    has_many :favorites
+    has_many :tutorials, through: :favorites
 
     extend Devise::Models
     devise :database_authenticatable, 
