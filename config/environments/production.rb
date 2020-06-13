@@ -107,4 +107,21 @@ Rails.application.configure do
   config.web_socket_server_url = "wss://solarco.herokuapp.com/cable" 
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
   config.api_url = 'https://solarco.herokuapp.com'
+
+
+  config.action_mailer.delivery_method = :smtp
+  
+
+  config.action_mailer.smtp_settings = {
+  user_name:      'whdan27@gmail.com',
+  password:       'nziidvmyjzsvasjh',
+  domain:         'gmail.com',
+  address:       'smtp.gmail.com',
+  port:          '587',
+  authentication: :plain,
+  enable_starttls_auto: true
+  }
+
+# Default Mailer Host
+Rails.application.routes.default_url_options[:host] = 'https://solarco-api.herokuapp.com'
 end
