@@ -284,7 +284,7 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-driver (0.7.2-java)
       websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.4)
+    websocket-extensions (0.1.5)
     wicked_pdf (2.0.2)
       activesupport
     zeitwerk (2.3.0)
