@@ -10,10 +10,10 @@ class Calculation < ApplicationRecord
     @panel_wt = 250 if wh_per_day >= 2000
     @panel_wt = 150 if wh_per_day < 2000
     if system.latitude.abs() < 70
-      gen_factor = ((90/system.latitude.abs()) * 1.78).ceil(2) if system.latitude.abs() > 25 || 6.5 #Generation Factor ~ sun rise hours 
+      gen_factor = ((90/system.latitude.abs()) * 1.75).ceil(2) if system.latitude.abs() > 25 || 6.4 #Generation Factor ~ sun rise hours 
     end
 
-    tot_power = (wh_per_day*1.35 / gen_factor).ceil(-2)
+    tot_power = (wh_per_day*1.38 / gen_factor).ceil(-2)
     @panels_no = ( tot_power / @panel_wt).ceil()
     @panels_no += 1 if @panels_no.odd? || @panels_no == 0
 

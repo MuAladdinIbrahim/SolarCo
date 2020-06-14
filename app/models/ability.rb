@@ -9,17 +9,31 @@ class Ability
     #   user ||= User.new # guest user (not logged in)
     if user.present?
       if user.instance_of? Client
-
+        can [:update, :destroy], Calculation, user_id: user.id
         can :create, Calculation
-        can :read, System
+        can [:read, :update, :destroy], System, user_id: user.id
+        can :create, System
         can [:update, :destroy, :read], Post, user_id: user.id
         can :create, Post
         can :update, Offer
+        can [:update, :destroy], OfferRate, user_id: user.id
+        can [:update, :destroy], OfferReview, user_id: user.id
+        can [:update, :destroy], Like, user_id: user.id
+        can [:update, :destroy], Comment, user_id: user.id
+        can [:update, :destroy], Favorite, user_id: user.id
+        can :create, OfferRate
+        can :create, OfferReview
+        can :create, Like
+        can :create, Comment
+        can :create, Favorite
+
       elsif user.instance_of? Contractor
 
         can [:update, :destroy], Offer, contractor_id: user.id
         can :create, Offer
         can :read, Post
+        can [:update, :destroy], Tutorial, contractor_id: user.id
+        can :create, Tutorial
 
       end
     end

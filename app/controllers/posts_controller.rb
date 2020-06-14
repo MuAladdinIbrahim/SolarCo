@@ -1,5 +1,6 @@
 class PostsController < ApiController
   before_action :set_post, only: [:show, :update, :destroy]
+  before_action :authenticate_user!, only: [:create, :destroy]
   self.page_cache_directory = :domain_cache_directory
   caches_page :index 
 
@@ -8,7 +9,7 @@ class PostsController < ApiController
       if(current_user)
         @posts = Post.where(user_id: current_user.id, closed: false).order(created_at: :desc)
         if(approved_params['closed'] == 'closed')
-           @posts = Post.where(user_id: current_user.id, closed: true)
+           @posts = Post.where(user_id: current_user.id, closed: true).order(created_at: :desc)
         end
       elsif(current_contractor)
         @posts = Post.where(closed: false).order(created_at: :desc)

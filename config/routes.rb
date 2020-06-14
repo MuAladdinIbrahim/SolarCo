@@ -20,12 +20,13 @@ Rails.application.routes.draw do
   end
 
   ######## Calculations Routes #########
-  post 'geocoder', to: 'geocoder#getLocation'
-  resources :calculations, only: [:index, :show]
+  post 'geocoder', to: 'geocoder#getLocation' 
+  get 'test', to: 'geocoder#test' 
+  resources :calculations, only: [:index, :show] 
   ###################################################
   
   ######### Systems Routes #########
-  resources :systems, only: [:index, :create, :destroy]
+  resources :systems, only: [:index, :create, :destroy] 
   ###################################################
 
   ######### Chat Routes #########
@@ -37,8 +38,8 @@ Rails.application.routes.draw do
   ######### ReviewsRoutes #########
   get 'offer_rates/per_contractor/:id', to: 'offer_rates#index'
   get 'offer_reviews/per_contractor/:id', to: 'offer_reviews#index'
-  resources :offer_rates, only: [:create, :show, :update]
-  resources :offer_reviews, only: [:create, :show, :update]
+  resources :offer_rates, only: [:create, :show, :update] 
+  resources :offer_reviews, only: [:create, :show, :update] 
   ###################################################
 
   ######### TutorailsRoutes #########
@@ -50,7 +51,7 @@ Rails.application.routes.draw do
   resources :comments
   get 'likes/tutorial/:id', to: 'likes#indexTutorial'
   resources :likes
-  get 'favorites/user/:id', to: 'favorites#indexUser'
+  get 'favorites/user/:id', to: 'favorites#indexUser' 
   resources :favorites
   ###################################################
 
