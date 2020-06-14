@@ -1,5 +1,6 @@
 class SystemsController < ApiController
   before_action :set_system, only: [:show, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /systems
   def index
