@@ -1,5 +1,5 @@
 class FavoritesController < ApiController
-  before_action :set_favorite, only: [:show, :update, :destroy]
+  before_action :set_favorite, only: [:show, :update]
   before_action :authenticate_user!
 
   # GET /favorites
@@ -49,6 +49,7 @@ class FavoritesController < ApiController
 
   # DELETE /favorites/1
   def destroy
+    @favorite = Favorite.find_by(user_id: current_user.id, tutorial_id: params[:id])
     @favorite.destroy
   end
 
