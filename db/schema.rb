@@ -229,7 +229,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_120418) do
 
   create_table "posts", force: :cascade do |t|
     t.boolean "closed", default: false
-    t.integer "offers_count"
+    t.integer "offers_count", default: 0
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
