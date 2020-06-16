@@ -1,7 +1,7 @@
 class CalculationsController < ApiController
   before_action :set_calculation, only: [:show, :update, :destroy]
   before_action :authenticate_user!, only: [:create, :index, :update, :destroy]
-  
+
   # GET /calculations
   def index
     @systems = System.where(user_id: current_user.id).order(created_at: :desc)
