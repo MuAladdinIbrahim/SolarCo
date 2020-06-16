@@ -27,7 +27,7 @@ createUserContractor("zeyad@mail.com", "zeyad", "123456", "zeyad");
     createUserContractor(Faker::Internet.email, Faker::Name.name, "123456", Faker::Name.unique.name); 
 end 
 
-20.times do
+25.times do
     System.create!(
         consumption: Faker::Number.between(from: 50, to: 500),
         latitude: (Faker::Address.latitude).to_f.round(6),
@@ -56,7 +56,7 @@ end
     )
 end
 
-10.times do |t|
+12.times do |t|
     5.times do |time|
         Offer.create!(
             proposal: Faker::Lorem.sentence(word_count: 20, supplemental: true),
@@ -96,7 +96,7 @@ Category.create!(category: "Charger-Controller")
 Category.create!(category: "Installations")
 Category.create!(category: "Maintenance")
 
-12.times do |t1|
+14.times do |t1|
     Tutorial.create!(
         title: Faker::FunnyName.two_word_name,
         body: Faker::Lorem.sentence(word_count: 100, supplemental: true),
