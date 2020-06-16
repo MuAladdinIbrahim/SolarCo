@@ -11,14 +11,11 @@ class CalculationsController < ApiController
 
   # GET /calculations/1
   def show
-    if @calculation
-      position = @calculation.position_Calculate(@calculation.system.latitude, @calculation.system.longitude)
-      cables_protections = @calculation.cables_protections_Calculate(@calculation)
-      published = @calculation.system.published? (@calculation.system.id) || false
-
-      @calc = {"system" => @calculation.system, "calculation" => @calculation, "cables_protections" => cables_protections, "installations" => position, "published" => published, "cost" => @calculation.system.cost}
-
-      render json: @calc
+    if (@calculation && (can?(:read, @calculation) && @calculation.system.user == current_user) ||  current_contractor) 
+        @calculatSys = getDetails()
+        render json: @calculatSys
+    else
+      render json: {:error => "You are not authorized to view this system"}, status: :unauthorized
     end
   end
 
@@ -35,16 +32,24 @@ class CalculationsController < ApiController
 
   # PATCH/PUT /calculations/1
   def update
-    if @calculation.update(calculation_params)
-      render json: @calculation
+    if @calculation.system.user == current_user
+      if @calculation.update(calculation_params)
+        render json: @calculation
+      else
+        render json: @calculation.errors, status: :unprocessable_entity
+      end
     else
-      render json: @calculation.errors, status: :unprocessable_entity
+      render json: {:error => "You are not authorized to update this system"}, status: :unauthorized
     end
   end
 
   # DELETE /calculations/1
   def destroy
-    @calculation.destroy
+    if can?(:destroy, @calculation) && @calculation.system.user == current_user
+      @calculation.destroy
+    else
+      render json: {:error => "You are not authorized to delete this system"}, status: :unauthorized
+    end
     # @calculation.system.destroy
   end
 
@@ -57,6 +62,14 @@ class CalculationsController < ApiController
     # Only allow a trusted parameter "white list" through.
     def calculation_params
       params.fetch(:calculation, {}).permit(:id)
+    end
+
+    def getDetails
+      position = @calculation.position_Calculate(@calculation.system.latitude, @calculation.system.longitude)
+      cables_protections = @calculation.cables_protections_Calculate(@calculation)
+      published = @calculation.system.published? (@calculation.system.id) || false
+
+      @calc = {"system" => @calculation.system, "calculation" => @calculation, "cables_protections" => cables_protections, "installations" => position, "published" => published, "cost" => @calculation.system.cost}
     end
 
 end

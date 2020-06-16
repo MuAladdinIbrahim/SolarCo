@@ -11,7 +11,11 @@ class SystemsController < ApiController
 
   # GET /systems/1
   def show
-    render json: @system
+    if (@system && (can?(:read, @system) && @system.user == current_user) ||  current_contractor) 
+      render json: @system
+    else
+      render json: {:error => "You are not authorized to view this system"}, status: :unauthorized
+    end
   end
 
   # POST /systems
@@ -29,19 +33,27 @@ class SystemsController < ApiController
 
   # PATCH/PUT /systems/1
   def update
-    if @system.update(system_params)
-      render json: @system
+    if @system.user == current_user
+      if @system.update(system_params)
+        render json: @system
+      else
+        render json: @system.errors, status: :unprocessable_entity
+      end
     else
-      render json: @system.errors, status: :unprocessable_entity
+      render json: {:error => "You are not authorized to update this system"}, status: :unauthorized
     end
   end
 
   # DELETE /systems/1
   def destroy
-    if !@system.onOffer? (@system)
-      @system.destroy
+    if can?(:destroy, @system) && @system.user == current_user
+      if !@system.onOffer? (@system)
+        @system.destroy
+      else
+        render json: {:error => "This System under Offer..!!"}, status: :locked
+      end
     else
-    render json: {"error" => "This System under Offer..!!"}
+      render json: {:error => "You are not authorized to delete this system"}, status: :unauthorized
     end
   end
 

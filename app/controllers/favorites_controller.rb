@@ -1,5 +1,5 @@
 class FavoritesController < ApiController
-  before_action :set_favorite, only: [:update, :update, :destroy]
+  before_action :set_favorite, only: [:show, :update, :destroy]
   before_action :authenticate_user!
 
   # GET /favorites
@@ -40,16 +40,24 @@ class FavoritesController < ApiController
 
   # PATCH/PUT /favorites/1
   def update
-    if @favorite.update(favorite_params)
-      render json: @favorite
+    if current_user.id == @favorite.user_id
+      if @favorite.update(favorite_params)
+        render json: @favorite
+      else
+        render json: @favorite.errors, status: :unprocessable_entity
+      end   
     else
-      render json: @favorite.errors, status: :unprocessable_entity
+      render json: {:error => "You are not authorized to update this favorite"}, status: :unauthorized
     end
   end
 
   # DELETE /favorites/1
   def destroy
-    @favorite.destroy
+    if current_user.id == @favorite.user_id
+      @favorite.destroy
+    else
+      render json: {:error => "You are not authorized to remove this favorite"}, status: :unauthorized
+    end
   end
 
   private
