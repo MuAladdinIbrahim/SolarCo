@@ -5,7 +5,7 @@ class System < ApplicationRecord
 
     validates :user, :consumption, :latitude, :city, :country, presence: true
     validates :consumption, numericality: { greater_than: 0 }
-    validates :address, length: {maximum: 200}
+    validates :address, length: {maximum: 500}
 
     PRICE_PER_WH = 3 #Cost per doller
     EG_PER_DOLLER = 16.5 

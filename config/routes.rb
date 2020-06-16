@@ -73,6 +73,9 @@ Rails.application.routes.draw do
   get 'offers/post/:post_id', to: 'offers#getOffers'
   ###################################################
   get 'notifications', to: 'notification#index'
+  get 'notifications/update', to: 'notification#updateAll'
+  get 'notifications/count', to: 'notification#getCount'
+
 
   ######## contact us create route#########
   post 'contacts', to: 'contacts#create'

@@ -1,5 +1,6 @@
 class TutorialsController < ApiController
     before_action :set_tutorial, only: [:show, :update, :destroy]
+    before_action :authenticate_contractor!, only: [:create , :update, :destroy]
 
     # GET /tutorials
     def index

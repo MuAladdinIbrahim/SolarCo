@@ -10,6 +10,7 @@ class CreateActivities < (ActiveRecord.version.release() < Gem::Version.new('5.2
       t.string  :key
       t.text    :parameters
       t.belongs_to :recipient, :polymorphic => true
+      t.boolean  :checked, default: false
 
       t.timestamps
     end

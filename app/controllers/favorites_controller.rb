@@ -1,5 +1,5 @@
 class FavoritesController < ApiController
-  before_action :set_favorite, only: [:show, :update]
+  before_action :set_favorite, only: [:update, :update, :destroy]
   before_action :authenticate_user!
 
   # GET /favorites
@@ -49,14 +49,13 @@ class FavoritesController < ApiController
 
   # DELETE /favorites/1
   def destroy
-    @favorite = Favorite.find_by(user_id: current_user.id, tutorial_id: params[:id])
     @favorite.destroy
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_favorite
-      @favorite = Favorite.find(params[:id])
+      @favorite = Favorite.find_by(user_id: current_user.id, tutorial_id: params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
