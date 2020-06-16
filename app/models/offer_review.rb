@@ -3,7 +3,7 @@ class OfferReview < ApplicationRecord
   belongs_to :offer
 
   validates :review, presence: true
-  validates :review, length: {in: 1..250}
+  validates :review, length: {in: 1..800}
 
   def getReviews(offers)
     offer_reviews = []
