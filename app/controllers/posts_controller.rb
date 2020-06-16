@@ -1,7 +1,7 @@
 class PostsController < ApiController
   before_action :set_post, only: [:show, :update, :destroy]
   before_action :authenticate_user!, only: [:create, :destroy]
-  before_action :authenticate_contractor!, only: [:update]
+  # before_action :authenticate_contractor!, only: [:update]
   self.page_cache_directory = :domain_cache_directory
   caches_page :index 
 
