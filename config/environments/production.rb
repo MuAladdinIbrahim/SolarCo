@@ -103,7 +103,7 @@ Rails.application.configure do
   # these configuration options.
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
-  config.action_cable.allowed_request_origins = ['https://solarco-api.herokuapp.com', 'http://solarco-api.herokuapp.com']
+  config.action_cable.allowed_request_origins = ['https://solarco.herokuapp.com', 'http://solarco.herokuapp.com']
   config.web_socket_server_url = "wss://solarco-api.herokuapp.com/cable" 
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
   config.api_url = 'https://solarco-api.herokuapp.com'

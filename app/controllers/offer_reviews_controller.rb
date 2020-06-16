@@ -1,5 +1,6 @@
 class OfferReviewsController < ApiController
   before_action :set_offer_review, only: [:show, :update, :destroy]
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
 
   # GET /offer_reviews
   def index

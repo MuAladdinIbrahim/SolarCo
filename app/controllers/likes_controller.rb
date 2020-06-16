@@ -1,5 +1,6 @@
 class LikesController < ApiController
     before_action :set_like, only: [:show, :update, :destroy]
+    before_action :authenticate_user!, only: [:create, :update, :destroy]
 
     # GET /likes
     def index

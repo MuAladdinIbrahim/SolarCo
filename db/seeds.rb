@@ -23,7 +23,7 @@ createUserContractor("mohamed@mail.com", "mohamed", "123456", "mohamed");
 createUserContractor("nouran@mail.com", "nouran", "123456", "nouran");
 createUserContractor("zeyad@mail.com", "zeyad", "123456", "zeyad");
 
-10.times do 
+14.times do 
     createUserContractor(Faker::Internet.email, Faker::Name.name, "123456", Faker::Name.unique.name); 
 end 
 
@@ -56,7 +56,7 @@ end
     )
 end
 
-9.times do |t|
+10.times do |t|
     5.times do |time|
         Offer.create!(
             proposal: Faker::Lorem.sentence(word_count: 20, supplemental: true),
@@ -89,21 +89,21 @@ end
 
 AdminUser.create!(email: "admin@admin.com", password: "admin123", password_confirmation: "admin123")
 
-Category.create!(category: "PV panel")
+Category.create!(category: "PV-panel")
 Category.create!(category: "Battery")
 Category.create!(category: "Inverter")
-Category.create!(category: "Charger Controller")
+Category.create!(category: "Charger-Controller")
 Category.create!(category: "Installations")
 Category.create!(category: "Maintenance")
 
-10.times do |t1|
+12.times do |t1|
     Tutorial.create!(
         title: Faker::FunnyName.two_word_name,
         body: Faker::Lorem.sentence(word_count: 30, supplemental: true),
         contractor_id: Contractor.all.sample.id,
         category_id: Category.all.sample.id,
     )
-    2.times do |t2|
+    4.times do |t2|
         Comment.create!(
             review: Faker::Hacker.say_something_smart,
             tutorial_id: Tutorial.last.id,
