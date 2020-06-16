@@ -17,13 +17,11 @@ class Ability
         can :create, Post
         
         can :update, Offer
-        can [:update, :destroy], OfferRate, user_id: user.id
-        can [:update, :destroy], OfferReview, user_id: user.id
+        can [:create, :read, :update, :destroy], OfferRate, user_id: user.id
+        can [:create, :read, :update, :destroy], OfferReview, user_id: user.id
         can [:update, :destroy], Like, user_id: user.id
         can [:update, :destroy], Comment, user_id: user.id
         can [:update, :destroy], Favorite, user_id: user.id
-        can :create, OfferRate
-        can :create, OfferReview
         can :create, Like
         can :create, Comment
         can :create, Favorite
@@ -33,6 +31,8 @@ class Ability
         can :read, Calculation
         can :read, System
         can :read, Post
+        can :read, OfferRate
+        can :read, OfferReview
         can [:update, :destroy], Offer, contractor_id: user.id
         can :create, Offer
         can [:update, :destroy], Tutorial, contractor_id: user.id

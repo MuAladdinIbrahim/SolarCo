@@ -11,7 +11,9 @@ class OfferReviewsController < ApiController
 
   # GET /offer_reviews/1
   def show
-    render json: @offer_review.as_json(methods: :user)
+    if can?(:read, @offer_review) || current_contractor
+      render json: @offer_review.as_json(methods: :user)
+    end
   end
 
   # POST /offer_reviews

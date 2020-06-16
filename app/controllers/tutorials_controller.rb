@@ -43,16 +43,24 @@ class TutorialsController < ApiController
   
     # PATCH/PUT /tutorials/1
     def update
-      if @tutorial.update(tutorial_params)
-        render json: @tutorial
+      if current_contractor.id == @tutorial.contractor_id
+        if @tutorial.update(tutorial_params)
+          render json: @tutorial
+        else
+          render json: @tutorial.errors, status: :unprocessable_entity
+        end      
       else
-        render json: @tutorial.errors, status: :unprocessable_entity
+        render json: {:error => "You are not authorized to update this article"}, status: :unauthorized
       end
     end
   
     # DELETE /tutorials/1
     def destroy
-      @tutorial.destroy
+      if current_contractor.id == @tutorial.contractor_id
+        @tutorial.destroy
+      else
+        render json: {:error => "You are not authorized to delete this article"}, status: :unauthorized
+      end
     end
   
     private

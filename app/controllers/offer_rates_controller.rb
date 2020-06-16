@@ -11,7 +11,9 @@ class OfferRatesController < ApiController
 
   # GET /offer_rates/1
   def show
-    render json: @offer_rate
+    if can?(:read, @offer_rate) || current_contractor
+      render json: @offer_rate
+    end
   end
 
   # POST /offer_rates
