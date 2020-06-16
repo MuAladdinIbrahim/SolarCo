@@ -234,7 +234,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_120418) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "title", null: false
-    t.text "description", null: false
+    t.text "description"
     t.bigint "system_id", null: false
     t.index ["system_id"], name: "index_posts_on_system_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
