@@ -1,6 +1,6 @@
 class OffersController < ApiController
   before_action :set_offer, only: [:show, :update, :destroy]
-  before_action :authenticate_contractor!, only: [:create , :update, :destroy]
+  before_action :authenticate_contractor!, only: [:create , :destroy]
 
 
   # GET /offers/post/1  -> end-point to retrieve all offer from specific post
