@@ -1,5 +1,5 @@
 class FavoritesController < ApiController
-  before_action :set_favorite, only: [:update, :update, :destroy]
+  before_action :set_favorite, only: [:show, :update, :destroy]
   before_action :authenticate_user!
 
   # GET /favorites
