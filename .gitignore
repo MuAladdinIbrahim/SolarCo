@@ -28,3 +28,5 @@
 
 #Ignore the cashing 
 /public/localhost
+/public/localhost/posts.json
+public/localhost/posts.json
