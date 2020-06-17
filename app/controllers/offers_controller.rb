@@ -1,14 +1,16 @@
 class OffersController < ApiController
   before_action :set_offer, only: [:show, :update, :destroy]
-  before_action :authenticate_contractor!, only: [:create , :destroy]
+  before_action :authenticate_contractor!, only: [:index, :create, :destroy]
 
 
   # GET /offers/post/1  -> end-point to retrieve all offer from specific post
   def getOffers
-    offers_per_post = Offer.where(post_id: params[:post_id])
-    @offers = offers_per_post.order(created_at: :asc).all
+    if current_contractor || current_user
+      offers_per_post = Offer.where(post_id: params[:post_id])
+      @offers = offers_per_post.order(created_at: :asc).limit(10)
 
-    render json: @offers.as_json(include: [{contractor: { methods: [:avatar_url] }}, :post,])
+      render json: @offers.as_json(include: [{contractor: { methods: [:avatar_url] }}, :post,])
+    end
   end
 
   # GET /offers

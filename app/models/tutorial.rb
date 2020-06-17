@@ -11,6 +11,6 @@ class Tutorial < ApplicationRecord
   validates :contractor, presence: true
   validates :category, presence: true
   validates :title, length: { in: 3..50 }
-  validates :body, length: { in: 50..5000 } 
+  validates :body, length: { in: 50..8000 } 
 
 end

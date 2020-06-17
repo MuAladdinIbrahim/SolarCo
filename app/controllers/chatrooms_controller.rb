@@ -1,4 +1,6 @@
 class ChatroomsController < ApplicationController
+    # before_action :authenticate_user!, only [:clientChats]
+    # before_action :authenticate_contractor!, only [:contractorChats]
 
     def clientChats
         @chatrooms = Chatroom.where(user_id: params[:id])

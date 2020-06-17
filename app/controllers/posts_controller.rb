@@ -7,6 +7,7 @@ class PostsController < ApiController
 
   # GET /posts
   def index
+    if current_contractor || current_user
       if(current_user)
         @posts = Post.where(user_id: current_user.id, closed: false).order(created_at: :desc)
         if(approved_params['closed'] == 'closed')
@@ -26,6 +27,9 @@ class PostsController < ApiController
           }
         }
       end
+    else
+      render json: {:error => "You need to sign in or sign up before continuing."}, status: :unauthorized
+    end
   end
 
   # GET /posts/1
@@ -59,7 +63,7 @@ class PostsController < ApiController
 
   # PATCH/PUT /posts/1
   def update
-    if can?(:update, @post)
+    if can?(:update, @post) || current_contractor
       if @post.closed
         render json: {:error => "Archieved Post can not be updated"}
       end

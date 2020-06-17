@@ -6,7 +6,7 @@ class ContactsController < ApiController
           if @contact.save
             render json: @contact, status: :created
           else
-      render json: {:error => "All fields are required!"}, status: :unprocessable_entity
+            render json: {:error => "All fields are required!"}, status: :unprocessable_entity
           end
     end
   
